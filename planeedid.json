@@ -1,0 +1,98 @@
+[
+  {
+    "nimi": "Merkuur",
+    "tüüp": "kiviplaneet",
+    "järjekordPäikesest": 1,
+    "kaugusPäikesest": 57.9,
+    "läbimõõt": 4879,
+    "gravitatsioon": 3.7,
+    "ööpäevaPikkus": 4222.6,
+    "aastaPikkus": 88,
+    "temperatuur": 167,
+    "kuudeArv": 0
+  },
+  {
+    "nimi": "Veenus",
+    "tüüp": "kiviplaneet",
+    "järjekordPäikesest": 2,
+    "kaugusPäikesest": 108.2,
+    "läbimõõt": 12104,
+    "gravitatsioon": 8.9,
+    "ööpäevaPikkus": 2802,
+    "aastaPikkus": 224.7,
+    "temperatuur": 464,
+    "kuudeArv": 0
+  },
+  {
+    "nimi": "Maa",
+    "tüüp": "kiviplaneet",
+    "järjekordPäikesest": 3,
+    "kaugusPäikesest": 149.6,
+    "läbimõõt": 12756,
+    "gravitatsioon": 9.8,
+    "ööpäevaPikkus": 24,
+    "aastaPikkus": 365.2,
+    "temperatuur": 15,
+    "kuudeArv": 1
+  },
+  {
+    "nimi": "Marss",
+    "tüüp": "kiviplaneet",
+    "järjekordPäikesest": 4,
+    "kaugusPäikesest": 228.0,
+    "läbimõõt": 6792,
+    "gravitatsioon": 3.7,
+    "ööpäevaPikkus": 24.7,
+    "aastaPikkus": 687,
+    "temperatuur": -65,
+    "kuudeArv": 2
+  },
+  {
+    "nimi": "Jupiter",
+    "tüüp": "gaasihiid",
+    "järjekordPäikesest": 5,
+    "kaugusPäikesest": 778.5,
+    "läbimõõt": 142984,
+    "gravitatsioon": 23.1,
+    "ööpäevaPikkus": 9.9,
+    "aastaPikkus": 4331,
+    "temperatuur": -110,
+    "kuudeArv": 95
+  },
+  {
+    "nimi": "Saturn",
+    "tüüp": "gaasihiid",
+    "järjekordPäikesest": 6,
+    "kaugusPäikesest": 1432.0,
+    "läbimõõt": 120536,
+    "gravitatsioon": 9,
+    "ööpäevaPikkus": 10.7,
+    "aastaPikkus": 10747,
+    "temperatuur": -140,
+    "kuudeArv": 274
+  },
+  {
+    "nimi": "Uraan",
+    "tüüp": "jäähiid",
+    "järjekordPäikesest": 7,
+    "kaugusPäikesest": 2867.0,
+    "läbimõõt": 51118,
+    "gravitatsioon": 8.7,
+    "ööpäevaPikkus": 17.2,
+    "aastaPikkus": 30589,
+    "temperatuur": -195,
+    "kuudeArv": 28
+  },
+  {
+    "nimi": "Neptuun",
+    "tüüp": "jäähiid",
+    "järjekordPäikesest": 8,
+    "kaugusPäikesest": 4515.0,
+    "läbimõõt": 49528,
+    "gravitatsioon": 11,
+    "ööpäevaPikkus": 16.1,
+    "aastaPikkus": 59800,
+    "temperatuur": -200,
+    "kuudeArv": 16
+  }
+]

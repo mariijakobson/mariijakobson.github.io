@@ -1,0 +1,17 @@
+:root{
+  --bg:#08151F;
+  --surface:#112B33;
+  --surface-hover:#1C3B40;
+  --ink:#D5C4A5;
+  --muted:#9EB1B2;
+  --accent:#D9B26C;
+  --accent-hover:#E5C48A;
+  --accent-ink:#152029;
+  --teal:#82B9B2;
+  --line:#35525D;
+  --error:#FFAAA0;
+  --error-bg:#34272D;
+  --success:#A5D9BE;
+  --heading:'Cormorant Garamond',Georgia,serif;
+  --body:'Literata',Georgia,serif;
+}

@@ -1,20 +1,20 @@
 "use strict";
 
 const calculators = [
-  { id: "nav", title: "NAV Impact", description: "Measure the impact of an amount on your fund’s NAV.", icon: "%", result: "Impact on NAV", fields: [["base", "Current NAV", "34,836,332.14"], ["impact", "Impact amount", "12,500.00"]] },
-  { id: "fee", title: "Fee Calculator", description: "Calculate an annual fee for a selected period.", icon: "÷", result: "Fee amount", fields: [["base", "Calculation base", "34,836,332.14"], ["rate", "Annual fee rate (%)", "1.50"]] },
-  { id: "bond", title: "Bond Interest Calculator", description: "Calculate accrued interest over an accrual period.", icon: "↗", result: "Accrued interest", fields: [["base", "Nominal / Principal amount", "1,000,000.00"], ["rate", "Annual coupon rate (%)", "7.75"]] }
+  { id: "nav", title: "NAV Impact", description: "Measure the impact of an amount on your fund’s NAV.", icon: "%", result: "Impact on NAV", fields: [["base", "Current NAV", "34 836 332.14"], ["impact", "Impact amount", "12 500.00"]] },
+  { id: "fee", title: "Fee Calculator", description: "Calculate an annual fee for a selected period.", icon: "÷", result: "Fee amount", fields: [["base", "Calculation base", "34 836 332.14"], ["rate", "Annual fee rate (%)", "1.50"]] },
+  { id: "bond", title: "Bond Interest Calculator", description: "Calculate accrued interest over an accrual period.", icon: "↗", result: "Accrued interest", fields: [["base", "Nominal / Principal amount", "1 000 000.00"], ["rate", "Annual coupon rate (%)", "7.75"]] }
 ];
 
 function fieldMarkup(id, name, label, placeholder, type = "text", wide = false) {
-  return `<div class="field ${wide ? "wide" : ""}"><label for="${id}-${name}">${label}</label><input id="${id}-${name}" name="${name}" type="${type}" ${type === "text" ? 'inputmode="decimal"' : ''} placeholder="${placeholder}" required aria-describedby="${id}-${name}-error"><p class="error" id="${id}-${name}-error" hidden></p></div>`;
+  return `<div class="field ${wide ? "wide" : ""}"><label for="${id}-${name}">${label}</label><input id="${id}-${name}" name="${name}" type="${type === "date" ? "text" : type}" inputmode="decimal" placeholder="${type === "date" ? "pp.kk.aaaa" : placeholder}" ${type === "date" ? 'maxlength="10"' : ""} required aria-describedby="${id}-${name}-error"><p class="error" id="${id}-${name}-error" hidden></p></div>`;
 }
 
 // Use the browser's local calendar; weekends are excluded, public holidays are not.
 function previousBusinessDay(today = new Date()) {
   const date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   do { date.setDate(date.getDate() - 1); } while ([0, 6].includes(date.getDay()));
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  return `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}`;
 }
 
 function periodMarkup(id) {
@@ -72,13 +72,18 @@ function parseAmount(raw) {
 }
 
 function formatNumber(value, decimals = 2) {
-  return (Object.is(value, -0) ? 0 : value).toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  return (Object.is(value, -0) ? 0 : value).toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).replaceAll(",", " ");
 }
 
+// Text fields keep the requested date format independent of browser locale.
 function parseDate(value) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
-  const date = new Date(`${value}T00:00:00Z`);
-  return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value ? date : null;
+  const match = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(value.trim());
+  if (!match) return null;
+  const [, day, month, year] = match;
+  if (Number(year) === 0) return null;
+  const iso = `${year}-${month}-${day}`;
+  const date = new Date(`${iso}T00:00:00Z`);
+  return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === iso ? date : null;
 }
 
 // UTC dates avoid daylight-saving shifts. 30/360 follows ISDA Bond Basis:
@@ -178,7 +183,7 @@ calculators.forEach(tool => {
       const raw = form.elements[name].value;
       numbers[name] = parseAmount(raw);
       if (!raw.trim()) setError(name, "Enter a value.");
-      else if (!Number.isFinite(numbers[name])) setError(name, "Enter a valid number, for example 12,500.50.");
+      else if (!Number.isFinite(numbers[name])) setError(name, "Enter a valid number, for example 12 500.50.");
       else if (name === "base" && tool.id === "nav" && numbers[name] <= 0) setError(name, "Current NAV must be greater than zero.");
       else if (name === "rate" && numbers[name] < 0) setError(name, "The annual rate cannot be negative.");
     });
@@ -186,8 +191,8 @@ calculators.forEach(tool => {
     if (tool.id !== "nav" && form.elements.mode.value === "period") {
       start = parseDate(form.elements.start.value);
       end = parseDate(form.elements.end.value);
-      if (!start) setError("start", "Enter a valid start date.");
-      if (!end) setError("end", "Enter a valid end date.");
+      if (!start) setError("start", "Enter a valid start date in DD.MM.YYYY format.");
+      if (!end) setError("end", "Enter a valid end date in DD.MM.YYYY format.");
       if (start && end && start > end) setError("end", "End date must be on or after start date.");
     }
     if (tool.id !== "nav" && form.elements.mode.value === "days") {
@@ -206,7 +211,7 @@ calculators.forEach(tool => {
       if (!Number.isFinite(result) || !Number.isFinite(bps)) { setError("impact", "These values are too large to calculate. Use smaller amounts."); form.elements.impact.focus(); return; }
       form.querySelector("[data-value]").textContent = `${formatNumber(result, 4)}%`;
       form.querySelector("[data-bps]").textContent = `${formatNumber(bps)} bps`;
-      steps = [`Impact % = Impact amount / Current NAV × 100`, `${numbers.impact.toLocaleString("en-US", {maximumFractionDigits: 20})} / ${numbers.base.toLocaleString("en-US", {maximumFractionDigits: 20})} × 100 = ${formatNumber(result, 4)}%`, `Impact bps = Impact amount / Current NAV × 10,000`, `${numbers.impact.toLocaleString("en-US", {maximumFractionDigits: 20})} / ${numbers.base.toLocaleString("en-US", {maximumFractionDigits: 20})} × 10,000 = ${formatNumber(bps)} bps`];
+      steps = [`Impact % = Impact amount / Current NAV × 100`, `${numbers.impact.toLocaleString("en-US", {maximumFractionDigits: 20}).replaceAll(",", " ")} / ${numbers.base.toLocaleString("en-US", {maximumFractionDigits: 20}).replaceAll(",", " ")} × 100 = ${formatNumber(result, 4)}%`, `Impact bps = Impact amount / Current NAV × 10,000`, `${numbers.impact.toLocaleString("en-US", {maximumFractionDigits: 20}).replaceAll(",", " ")} / ${numbers.base.toLocaleString("en-US", {maximumFractionDigits: 20}).replaceAll(",", " ")} × 10,000 = ${formatNumber(bps)} bps`];
     } else {
       const basis = form.elements.basis.value;
       const usePeriod = form.elements.mode.value === "period";
@@ -216,7 +221,7 @@ calculators.forEach(tool => {
       result = numbers.base * (numbers.rate / 100) * fraction;
       if (!Number.isFinite(result)) { setError("base", "These values are too large to calculate. Use smaller amounts."); form.elements.base.focus(); return; }
       form.querySelector("[data-value]").textContent = formatNumber(result);
-      steps = [`Day count: ${days} days · ${basis}${basis === "30/360" ? " (Bond Basis / ISDA)" : ""}`, usePeriod ? `Period: ${form.elements.start.value} to ${form.elements.end.value} (end excluded).` : "Days entered directly; no date adjustments applied.", `Day count fraction: ${days} / ${denominator} = ${formatNumber(fraction, 8)}`, `${tool.result} = ${tool.id === "fee" ? "Base" : "Nominal"} × Rate / 100 × Days / ${denominator}`, `${numbers.base.toLocaleString("en-US", {maximumFractionDigits: 20})} × ${numbers.rate.toLocaleString("en-US", {maximumFractionDigits: 20})}% × ${days} / ${denominator} = ${formatNumber(result)}`];
+      steps = [`Day count: ${days} days · ${basis}${basis === "30/360" ? " (Bond Basis / ISDA)" : ""}`, usePeriod ? `Period: ${form.elements.start.value} to ${form.elements.end.value} (end excluded).` : "Days entered directly; no date adjustments applied.", `Day count fraction: ${days} / ${denominator} = ${formatNumber(fraction, 8)}`, `${tool.result} = ${tool.id === "fee" ? "Base" : "Nominal"} × Rate / 100 × Days / ${denominator}`, `${numbers.base.toLocaleString("en-US", {maximumFractionDigits: 20}).replaceAll(",", " ")} × ${numbers.rate.toLocaleString("en-US", {maximumFractionDigits: 20}).replaceAll(",", " ")}% × ${days} / ${denominator} = ${formatNumber(result)}`];
     }
     // Only text nodes are used for calculation output; entered content is never HTML.
     if (tool.id !== "nav") steps.push("Result is in the same currency as the entered amount.");

@@ -6,19 +6,34 @@ const calculators = [
   { id: "bond", title: "Bond Interest Calculator", description: "Calculate accrued interest over an accrual period.", icon: "↗", result: "Accrued interest", fields: [["base", "Nominal / Principal amount", "1,000,000.00"], ["rate", "Annual coupon rate (%)", "7.75"]] }
 ];
 
-function fieldMarkup(id, name, label, placeholder, type = "text", wide = true) {
+function fieldMarkup(id, name, label, placeholder, type = "text", wide = false) {
   return `<div class="field ${wide ? "wide" : ""}"><label for="${id}-${name}">${label}</label><input id="${id}-${name}" name="${name}" type="${type}" ${type === "text" ? 'inputmode="decimal"' : ''} placeholder="${placeholder}" required aria-describedby="${id}-${name}-error"><p class="error" id="${id}-${name}-error" hidden></p></div>`;
 }
 
-document.getElementById("calculators").innerHTML = calculators.map((tool, index) => {
+// Use the browser's local calendar; weekends are excluded, public holidays are not.
+function previousBusinessDay(today = new Date()) {
+  const date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  do { date.setDate(date.getDate() - 1); } while ([0, 6].includes(date.getDay()));
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function periodMarkup(id) {
+  return `<fieldset class="mode-choice"><legend>Calculate using</legend><label><input type="radio" name="mode" value="days" checked> Number of days</label><label><input type="radio" name="mode" value="period"> Date period</label></fieldset>
+    <div class="fields period-fields">
+      <div class="days-fields">${fieldMarkup(id, "days", "Number of days", "e.g. 1")}</div>
+      <div class="date-fields" hidden>${fieldMarkup(id, "start", id === "bond" ? "Accrual start date" : "Start date", "", "date")}${fieldMarkup(id, "end", id === "bond" ? "Accrual end date" : "End date", "", "date")}</div>
+      <div class="field"><label for="${id}-basis">Day count basis</label><select id="${id}-basis" name="basis"><option>ACT/365</option><option>ACT/360</option><option>30/360</option></select></div>
+    </div><p class="hint mode-hint"></p>`;
+}
+
+document.getElementById("calculators").innerHTML = calculators.map(tool => {
   const period = tool.id !== "nav";
-  return `<section class="calculator"><h2 style="margin:0"><button type="button" class="accordion" id="${tool.id}-heading" aria-expanded="${index === 0}" aria-controls="${tool.id}-panel"><span class="tool-icon" aria-hidden="true">${tool.icon}</span><span class="heading-copy"><strong>${tool.title}</strong><small>${tool.description}</small></span><span class="chevron" aria-hidden="true"></span></button></h2>
-    <form class="panel" id="${tool.id}-panel" aria-labelledby="${tool.id}-heading" autocomplete="off" novalidate ${index ? "hidden" : ""}>
+  return `<section class="calculator"><h2 style="margin:0"><button type="button" class="accordion" id="${tool.id}-heading" aria-expanded="false" aria-controls="${tool.id}-panel"><span class="tool-icon" aria-hidden="true">${tool.icon}</span><span class="heading-copy"><strong>${tool.title}</strong><small>${tool.description}</small></span><span class="chevron" aria-hidden="true"></span></button></h2>
+    <form class="panel" id="${tool.id}-panel" aria-labelledby="${tool.id}-heading" autocomplete="off" novalidate hidden>
       <div class="inputs"><div class="fields">${tool.fields.map(f => fieldMarkup(tool.id, ...f)).join("")}
-      ${period ? fieldMarkup(tool.id, "start", tool.id === "bond" ? "Accrual start date" : "Start date", "", "date", false) + fieldMarkup(tool.id, "end", tool.id === "bond" ? "Accrual end date" : "End date", "", "date", false) + `<div class="field wide"><label for="${tool.id}-basis">Day count basis</label><select id="${tool.id}-basis" name="basis"><option>ACT/365</option><option>ACT/360</option><option>30/360</option></select></div>` : ""}</div>
-      <p class="hint">${period ? (tool.id === "fee" ? "Base: NAV or another amount subject to the fee. " : "") + "Start date included; end date excluded. 30/360 uses Bond Basis (ISDA)." : "Both amounts must be in the same currency."}</p>
+      </div>${period ? periodMarkup(tool.id) : '<p class="hint">Both amounts must be in the same currency.</p>'}
       <div class="actions"><button class="primary" type="submit">Calculate <span aria-hidden="true">→</span></button><button class="reset" type="reset">Reset</button></div></div>
-      <div class="result"><div class="result-kicker">CALCULATION RESULT</div><div class="metrics" aria-live="polite" aria-atomic="true"><div class="metric"><div class="metric-label">${tool.result}</div><div class="value" data-value>—</div></div>${!period ? '<div class="metric"><div class="metric-label">Impact in bps</div><div class="value" data-bps>—</div></div>' : ""}<p class="result-note">Enter your values to calculate.</p></div><button class="details-button" type="button" aria-expanded="false" aria-controls="${tool.id}-details" disabled>Show calculation</button><div class="calculation" id="${tool.id}-details" hidden></div></div>
+      <div class="result"><div class="metrics" aria-live="polite" aria-atomic="true"><div class="metric"><div class="metric-label">${tool.result}</div><div class="value" data-value>—</div></div>${!period ? '<div class="metric"><div class="metric-label">Impact in bps</div><div class="value" data-bps>—</div></div>' : ""}</div><button class="details-button" type="button" aria-expanded="false" aria-controls="${tool.id}-details" disabled>Show calculation</button><div class="calculation" id="${tool.id}-details" hidden></div></div>
     </form></section>`;
 }).join("");
 
@@ -63,11 +78,36 @@ calculators.forEach(tool => {
   const form = document.getElementById(`${tool.id}-panel`);
   const toggle = form.querySelector(".details-button");
   const details = form.querySelector(".calculation");
-  const note = form.querySelector(".result-note");
+
+  function updateMode() {
+    if (tool.id === "nav") return;
+    const period = form.elements.mode.value === "period";
+    form.querySelector(".days-fields").hidden = period;
+    form.querySelector(".date-fields").hidden = !period;
+    form.elements.days.disabled = period;
+    form.elements.start.disabled = !period;
+    form.elements.end.disabled = !period;
+    form.querySelector(".mode-hint").textContent = period
+      ? "End date excluded: same dates = 0 days. Default: previous weekday (holidays not excluded)."
+      : "Enter whole days. For 30/360, enter convention-adjusted days or use Date period.";
+  }
+
+  function setPeriodDefaults() {
+    if (tool.id === "nav") return;
+    form.elements.days.defaultValue = "1";
+    form.elements.days.value = "1";
+    const date = previousBusinessDay();
+    form.elements.start.defaultValue = date;
+    form.elements.end.defaultValue = date;
+    form.elements.start.value = date;
+    form.elements.end.value = date;
+  }
+
+  setPeriodDefaults();
+  updateMode();
 
   function clearResult() {
     form.querySelectorAll(".value").forEach(value => { value.textContent = "—"; });
-    note.textContent = "Enter your values to calculate.";
     details.hidden = true;
     details.textContent = "";
     toggle.disabled = true;
@@ -89,8 +129,13 @@ calculators.forEach(tool => {
   }
 
   form.addEventListener("input", () => { clearResult(); clearErrors(); });
-  form.addEventListener("change", clearResult);
-  form.addEventListener("reset", () => { clearResult(); clearErrors(); });
+  form.addEventListener("change", () => { updateMode(); clearResult(); clearErrors(); });
+  form.addEventListener("reset", () => {
+    clearResult();
+    clearErrors();
+    // Native form reset completes after this event.
+    queueMicrotask(() => { setPeriodDefaults(); updateMode(); });
+  });
   toggle.addEventListener("click", () => {
     details.hidden = !details.hidden;
     toggle.textContent = details.hidden ? "Show calculation" : "Hide calculation";
@@ -111,12 +156,18 @@ calculators.forEach(tool => {
       else if (name === "rate" && numbers[name] < 0) setError(name, "The annual rate cannot be negative.");
     });
     let start, end;
-    if (tool.id !== "nav") {
+    if (tool.id !== "nav" && form.elements.mode.value === "period") {
       start = parseDate(form.elements.start.value);
       end = parseDate(form.elements.end.value);
       if (!start) setError("start", "Enter a valid start date.");
       if (!end) setError("end", "Enter a valid end date.");
       if (start && end && start > end) setError("end", "End date must be on or after start date.");
+    }
+    if (tool.id !== "nav" && form.elements.mode.value === "days") {
+      const raw = form.elements.days.value.trim();
+      numbers.days = parseAmount(raw);
+      if (!raw) setError("days", "Enter the number of days.");
+      else if (!Number.isSafeInteger(numbers.days) || numbers.days < 0) setError("days", "Enter a non-negative whole number of days.");
     }
     const firstInvalid = form.querySelector('[aria-invalid="true"]');
     if (firstInvalid) { firstInvalid.focus(); return; }
@@ -129,19 +180,19 @@ calculators.forEach(tool => {
       form.querySelector("[data-value]").textContent = `${formatNumber(result, 4)}%`;
       form.querySelector("[data-bps]").textContent = `${formatNumber(bps)} bps`;
       steps = [`Impact % = Impact amount / Current NAV × 100`, `${numbers.impact.toLocaleString("en-US", {maximumFractionDigits: 20})} / ${numbers.base.toLocaleString("en-US", {maximumFractionDigits: 20})} × 100 = ${formatNumber(result, 4)}%`, `Impact bps = Impact amount / Current NAV × 10,000`, `${numbers.impact.toLocaleString("en-US", {maximumFractionDigits: 20})} / ${numbers.base.toLocaleString("en-US", {maximumFractionDigits: 20})} × 10,000 = ${formatNumber(bps)} bps`];
-      note.textContent = "Relative to the current NAV.";
     } else {
       const basis = form.elements.basis.value;
-      const days = dayCount(start, end, basis);
+      const usePeriod = form.elements.mode.value === "period";
+      const days = usePeriod ? dayCount(start, end, basis) : numbers.days;
       const denominator = basis === "ACT/365" ? 365 : 360;
       const fraction = days / denominator;
       result = numbers.base * (numbers.rate / 100) * fraction;
       if (!Number.isFinite(result)) { setError("base", "These values are too large to calculate. Use smaller amounts."); form.elements.base.focus(); return; }
       form.querySelector("[data-value]").textContent = formatNumber(result);
-      note.textContent = `In the same currency as the ${tool.id === "fee" ? "calculation base" : "principal amount"}.`;
-      steps = [`Day count: ${days} days · ${basis}${basis === "30/360" ? " (Bond Basis / ISDA)" : ""}`, `Period: ${form.elements.start.value} to ${form.elements.end.value} (end excluded).`, `Day count fraction: ${days} / ${denominator} = ${formatNumber(fraction, 8)}`, `${tool.result} = ${tool.id === "fee" ? "Base" : "Nominal"} × Rate / 100 × Days / ${denominator}`, `${numbers.base.toLocaleString("en-US", {maximumFractionDigits: 20})} × ${numbers.rate.toLocaleString("en-US", {maximumFractionDigits: 20})}% × ${days} / ${denominator} = ${formatNumber(result)}`];
+      steps = [`Day count: ${days} days · ${basis}${basis === "30/360" ? " (Bond Basis / ISDA)" : ""}`, usePeriod ? `Period: ${form.elements.start.value} to ${form.elements.end.value} (end excluded).` : "Days entered directly; no date adjustments applied.", `Day count fraction: ${days} / ${denominator} = ${formatNumber(fraction, 8)}`, `${tool.result} = ${tool.id === "fee" ? "Base" : "Nominal"} × Rate / 100 × Days / ${denominator}`, `${numbers.base.toLocaleString("en-US", {maximumFractionDigits: 20})} × ${numbers.rate.toLocaleString("en-US", {maximumFractionDigits: 20})}% × ${days} / ${denominator} = ${formatNumber(result)}`];
     }
     // Only text nodes are used for calculation output; entered content is never HTML.
+    if (tool.id !== "nav") steps.push("Result is in the same currency as the entered amount.");
     steps.forEach(step => { const p = document.createElement("p"); p.textContent = step; details.append(p); });
     toggle.disabled = false;
   });

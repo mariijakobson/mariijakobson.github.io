@@ -37,11 +37,38 @@ document.getElementById("calculators").innerHTML = calculators.map(tool => {
     </form></section>`;
 }).join("");
 
-// Accept plain decimals and correctly grouped English thousands separators.
+// A single comma or dot is decimal. With both, the rightmost is decimal.
+// Repeated identical separators are accepted only as valid thousands groups.
 function parseAmount(raw) {
-  const value = raw.trim();
-  if (!/^[+-]?(?:(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?|\.\d+)$/.test(value)) return NaN;
-  return Number(value.replaceAll(",", ""));
+  let value = raw.trim().replace(/[\u00a0\u202f]/g, " ");
+  if (!value) return NaN;
+  const sign = /^[+-]/.test(value) ? value[0] : "";
+  if (sign) value = value.slice(1);
+  if (!/^[\d., ]+$/.test(value)) return NaN;
+
+  if (value.includes(" ")) {
+    if (!/^\d{1,3}(?: \d{3})+(?:[.,]\d+)?$/.test(value)) return NaN;
+    value = value.replaceAll(" ", "");
+  }
+
+  if (value.includes(",") && value.includes(".")) {
+    const commaDecimal = value.lastIndexOf(",") > value.lastIndexOf(".");
+    const valid = commaDecimal
+      ? /^\d{1,3}(?:\.\d{3})+,\d+$/
+      : /^\d{1,3}(?:,\d{3})+\.\d+$/;
+    if (!valid.test(value)) return NaN;
+    value = commaDecimal ? value.replaceAll(".", "").replace(",", ".") : value.replaceAll(",", "");
+  } else {
+    const separators = value.match(/[.,]/g) || [];
+    if (separators.length > 1) {
+      if (!/^\d{1,3}(?:,\d{3}){2,}$/.test(value) && !/^\d{1,3}(?:\.\d{3}){2,}$/.test(value)) return NaN;
+      value = value.replace(/[.,]/g, "");
+    } else {
+      value = value.replace(",", ".");
+    }
+  }
+  if (!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(value)) return NaN;
+  return Number(sign + value);
 }
 
 function formatNumber(value, decimals = 2) {

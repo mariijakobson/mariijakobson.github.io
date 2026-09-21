@@ -6,37 +6,53 @@
   <meta name="description" content="Simple, private calculators for NAV impact, annual fees and accrued bond interest.">
   <title>FA Toolbox</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232557df'/%3E%3Cpath d='M12 29V11h17v4H17v4h10v4H17v6' fill='white'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/utils.js" defer></script>
+  <script src="js/calculators/nav-impact.js" defer></script>
+  <script src="js/calculators/fee-calculator.js" defer></script>
+  <script src="js/calculators/bond-interest.js" defer></script>
+  <script src="data/accounts.js" defer></script>
+  <script src="js/chart-of-accounts.js" defer></script>
+  <script src="js/app.js" defer></script>
 </head>
 <body>
   <header class="topbar"><div class="brand"><span class="brand-mark" aria-hidden="true">FA</span><h1>FA Toolbox</h1></div><span class="top-note">FUND ADMINISTRATION</span></header>
-  <main>
+  <main class="toolbox-layout">
+    <div class="workspace-column">
     <section class="account-reference" lang="en" aria-label="Debit and credit reference">
       <div class="accounts-panel">
         <div class="account-grid">
           <div class="account-card">
-            <h3><span class="account-number">1</span>Assets</h3>
+            <h3><span class="account-title-anchor"><span class="account-number">1</span><span class="account-name">Assets</span></span></h3>
             <table class="account-sides"><caption class="sr-only">Increases and decreases in assets</caption><thead><tr><th scope="col">Debit</th><th scope="col">Credit</th></tr></thead><tbody><tr><td class="increase"><span aria-hidden="true">+</span>Increase</td><td class="decrease"><span aria-hidden="true">−</span>Decrease</td></tr></tbody></table>
           </div>
           <div class="account-card">
-            <h3><span class="account-number">2</span>Liabilities &amp; equity</h3>
-            <table class="account-sides"><caption class="sr-only">Increases and decreases in liabilities and equity</caption><thead><tr><th scope="col">Debit</th><th scope="col">Credit</th></tr></thead><tbody><tr><td class="decrease"><span aria-hidden="true">−</span>Decrease</td><td class="increase"><span aria-hidden="true">+</span>Increase</td></tr></tbody></table>
+            <h3><span class="account-title-anchor"><span class="account-number">2</span><span class="account-name">Liabilities</span></span></h3>
+            <table class="account-sides"><caption class="sr-only">Increases and decreases in liabilities</caption><thead><tr><th scope="col">Debit</th><th scope="col">Credit</th></tr></thead><tbody><tr><td class="decrease"><span aria-hidden="true">−</span>Decrease</td><td class="increase"><span aria-hidden="true">+</span>Increase</td></tr></tbody></table>
           </div>
           <div class="account-card">
-            <h3><span class="account-number">3</span>Income</h3>
+            <h3><span class="account-title-anchor"><span class="account-number">3</span><span class="account-name">Income</span></span></h3>
             <table class="account-sides"><caption class="sr-only">Increases and decreases in income</caption><thead><tr><th scope="col">Debit</th><th scope="col">Credit</th></tr></thead><tbody><tr><td class="decrease"><span aria-hidden="true">−</span>Decrease</td><td class="increase"><span aria-hidden="true">+</span>Increase</td></tr></tbody></table>
           </div>
           <div class="account-card">
-            <h3><span class="account-number">4</span>Expenses</h3>
+            <h3><span class="account-title-anchor"><span class="account-number">4</span><span class="account-name">Expenses</span></span></h3>
             <table class="account-sides"><caption class="sr-only">Increases and decreases in expenses</caption><thead><tr><th scope="col">Debit</th><th scope="col">Credit</th></tr></thead><tbody><tr><td class="increase"><span aria-hidden="true">+</span>Increase</td><td class="decrease"><span aria-hidden="true">−</span>Decrease</td></tr></tbody></table>
           </div>
         </div>
       </div>
     </section>
-    <div class="section-label"><span>YOUR CALCULATORS</span><span>03 tools</span></div>
+    <div class="section-label"><span>YOUR CALCULATORS</span><span id="tool-count">00 tools</span></div>
     <div id="calculators"></div>
     <noscript><p>Please enable JavaScript to use these calculators. All calculations run in your browser.</p></noscript>
+    </div>
+    <aside class="chart-panel" aria-labelledby="chart-title">
+      <div class="chart-header"><h2 id="chart-title">Chart of accounts</h2><span class="chart-count" id="chart-count">0 accounts</span></div>
+      <label class="sr-only" for="account-search">Search all accounts by code or name</label>
+      <input type="search" id="account-search" placeholder="Search code or name…" autocomplete="off" aria-controls="chart-list">
+      <div class="chart-filters" role="group" aria-label="Accounts to display"><button type="button" id="chart-key" aria-pressed="true">Key accounts</button><button type="button" id="chart-all" aria-pressed="false">All accounts</button></div>
+      <p class="chart-status" id="chart-status" role="status"></p>
+      <ul class="chart-list" id="chart-list" aria-label="Accounts"></ul>
+    </aside>
     <footer><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="6" y="10" width="12" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"/></svg><span>No data is stored. All calculations are performed in your browser.</span></footer>
   </main>
 </body>

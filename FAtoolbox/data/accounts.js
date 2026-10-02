@@ -271,7 +271,7 @@ window.FA_CHART_OF_ACCOUNTS = [
   { code: "5400", name: "Other Expenses", nameEt: "Muud kulud", category: "Expenses", key: true },
   { code: "5410", name: "Property Sale Expenses", nameEt: "Vara müügikulud", category: "Expenses", key: false },
   { code: "5440", name: "Complience Fee Expense", nameEt: "Vastavuskontrolli tasu kulu", category: "Expenses", key: false },
-  { code: "5470", name: "Interest paid bank cash acc", nameEt: "Pangakontolt makstud intress", category: "Expenses", key: false },
+  { code: "5470", name: "Interest paid bank cash acc", nameEt: "Pangakontolt makstud intress", category: "Expenses", key: true },
   { code: "5500", name: "Legal Expenses", nameEt: "Õigusteenuste kulud", category: "Expenses", key: false },
   { code: "5510", name: "Audit Expenses", nameEt: "Auditikulud", category: "Expenses", key: false },
   { code: "6000", name: "Notional", nameEt: "Nominaalväärtus", category: "Notional", key: false },

@@ -553,12 +553,12 @@ footer svg {
   background: #e7eef6;
   color: #243f60;
   border-bottom: 1px solid #cad8e8;
-  padding: 0 max(24px, calc((100vw - 960px) / 2 + 24px));
+  padding: 0 max(22px, calc((100vw - 900px) / 2 + 22px));
 }
 
 .brand-mark { background: #456b95; border-radius: 8px; }
 .top-note { color: #536d8b; }
-main { max-width: 960px; padding: 16px 24px; }
+main { max-width: 900px; padding: 14px 22px; }
 .calculator { border-radius: 9px; margin-bottom: 9px; }
 .accordion {
   background: #496d96;
@@ -599,9 +599,9 @@ input, select { border-radius: 6px; border-color: #ccd8e6; }
 
 /* Side reference stays independent of the calculator accordions. */
 main.toolbox-layout { position: relative; max-width: none; width: 100%; }
-.workspace-column { width: 100%; max-width: 960px; min-width: 0; margin: 0 auto; }
-.toolbox-layout > footer { max-width: 960px; margin: 0 auto; }
-.chart-panel { background: #fff; border: 1px solid #d5dfeb; border-radius: 9px; padding: 15px; min-width: 0; }
+.workspace-column { width: 100%; max-width: 900px; min-width: 0; margin: 0 auto; }
+.toolbox-layout > footer { max-width: 900px; margin: 0 auto; }
+.chart-panel { background: #fff; border: 1px solid #d5dfeb; border-radius: 9px; padding: 14px; min-width: 0; }
 .chart-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 14px; }
 .chart-header h2 { font-size: 16px; color: #294967; margin: 0; }
 .chart-count { font-size: 12px; color: #62738a; }
@@ -609,19 +609,19 @@ main.toolbox-layout { position: relative; max-width: none; width: 100%; }
 .chart-filters button { flex: 1; min-height: 36px; padding: 6px; border: 0; border-radius: 4px; background: transparent; color: #526b87; font-size: 13px; }
 .chart-filters button[aria-pressed="true"] { background: #496d96; color: white; }
 .chart-status { color: #62738a; font-size: 12px; line-height: 1.5; margin: 10px 0; }
-.chart-list { list-style: none; padding: 0; margin: 0; max-height: 560px; overflow-y: auto; }
-.chart-list li { display: grid; grid-template-columns: minmax(52px, auto) minmax(0, 1fr); gap: 10px; padding: 10px 0; border-top: 1px solid #e7edf4; font-size: 14px; line-height: 1.4; overflow-wrap: anywhere; }
+.chart-list { list-style: none; padding: 0; margin: 0; max-height: 600px; overflow-y: auto; }
+.chart-list li { display: grid; grid-template-columns: minmax(46px, auto) minmax(0, 1fr); gap: 8px; padding: 6px 0; border-top: 1px solid #e7edf4; font-size: 13px; line-height: 1.3; overflow-wrap: anywhere; }
 .chart-code { font-variant-numeric: tabular-nums; color: #365b83; font-weight: 650; }
 @media(min-width:1600px) {
   .chart-panel {
     position: absolute;
     top: 16px;
-    left: calc(50% + 504px);
-    width: 310px;
+    left: calc(50% + 472px);
+    width: 290px;
   }
 }
 @media(max-width:1599px) {
-  .chart-panel { width: 100%; max-width: 960px; margin: 16px auto 0; }
-  .chart-list { max-height: 420px; }
+  .chart-panel { width: 100%; max-width: 900px; margin: 14px auto 0; }
+  .chart-list { max-height: 520px; }
 }
 

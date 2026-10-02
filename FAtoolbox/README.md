@@ -16,7 +16,7 @@ All calculations run locally in the browser. The application does not store or t
 - Debit/credit reference
 - Searchable P998YOB chart of accounts with source-workbook defaults
 
-The accounts in `data/accounts.js` come from `P998YOBChart of Accounts123115.csv.xlsx`. Rows highlighted yellow in the source workbook are the default key-account view.
+The accounts in `data/accounts.js` come from `P998YOBChart of Accounts123208.csv`. The default key-account view preserves the yellow selections from the preceding source workbook.
 
 ## Input conventions
 

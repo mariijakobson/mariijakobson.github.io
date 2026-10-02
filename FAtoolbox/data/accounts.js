@@ -220,7 +220,7 @@ window.FA_CHART_OF_ACCOUNTS = [
   { code: "4445", name: "Misc Roundings", nameEt: "Ümardusvahed", category: "Income", key: true },
   { code: "4450", name: "Other Interest Accrued FX Swap", nameEt: "Valuutaswapide muu kogunenud intress", category: "Income", key: false },
   { code: "4460", name: "Other Interest Received", nameEt: "Muu saadud intress", category: "Income", key: false },
-  { code: "4470", name: "Bank credit interest cash acc", nameEt: "Pangakonto kreeditintress", category: "Income", key: false },
+  { code: "4470", name: "Bank credit interest cash acc", nameEt: "Pangakonto kreeditintress", category: "Income", key: true },
   { code: "4480", name: "Intr Accr-Recd Realestate", nameEt: "Kinnisvara kogunenud ja saadud intress", category: "Income", key: false },
   { code: "4490", name: "Intr Accr-Rec Struct Instr", nameEt: "Struktureeritud instrumentide kogunenud ja saadud intress", category: "Income", key: false },
   { code: "4500", name: "Dividends Received", nameEt: "Saadud dividendid", category: "Income", key: true },

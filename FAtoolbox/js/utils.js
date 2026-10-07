@@ -55,7 +55,18 @@ function formatRawNumber(value) {
 }
 
 function parseDate(value) {
-  const match = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(value.trim());
+  const trimmed = value.trim();
+  const match = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(trimmed);
+  const isoMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(trimmed);
+  if (isoMatch) {
+    const [, year, month, day] = isoMatch;
+    if (Number(year) === 0) return null;
+    const iso = `${year}-${month}-${day}`;
+    const date = new Date(`${iso}T00:00:00Z`);
+    return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === iso
+      ? date
+      : null;
+  }
   if (!match) return null;
 
   const [, day, month, year] = match;
@@ -94,7 +105,7 @@ function previousBusinessDay(today = new Date()) {
     date.setDate(date.getDate() - 1);
   } while ([0, 6].includes(date.getDay()));
 
-  return `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}`;
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
 window.FAUtils = {

@@ -12,10 +12,11 @@ const { parseDate, parseNumber, previousBusinessDay } = window.FAUtils;
 const calculators = window.FACalculators;
 
 function fieldMarkup(id, name, label, placeholder, type = "text") {
-  const dateAttributes = type === "date" ? ' maxlength="10"' : "";
-  const inputMode = type === "date" ? "numeric" : "decimal";
-  const displayedPlaceholder = type === "date" ? "pp.kk.aaaa" : placeholder;
-  return `<div class="field"><label for="${id}-${name}">${label}</label><input id="${id}-${name}" name="${name}" type="text" inputmode="${inputMode}" placeholder="${displayedPlaceholder}"${dateAttributes} required aria-describedby="${id}-${name}-error"><p class="error" id="${id}-${name}-error" hidden></p></div>`;
+  const inputType = type === "date" ? "date" : "text";
+  const inputAttributes = type === "date"
+    ? ""
+    : ` inputmode="decimal" placeholder="${placeholder}"`;
+  return `<div class="field"><label for="${id}-${name}">${label}</label><input id="${id}-${name}" name="${name}" type="${inputType}"${inputAttributes} required aria-describedby="${id}-${name}-error"><p class="error" id="${id}-${name}-error" hidden></p></div>`;
 }
 
 function periodMarkup(calculator) {
@@ -145,8 +146,8 @@ function initializeCalculator(calculator) {
         period.endText = form.elements.end.value;
         period.start = parseDate(period.startText);
         period.end = parseDate(period.endText);
-        if (!period.start) setError(form, calculator.id, "start", "Enter a valid start date in DD.MM.YYYY format.");
-        if (!period.end) setError(form, calculator.id, "end", "Enter a valid end date in DD.MM.YYYY format.");
+        if (!period.start) setError(form, calculator.id, "start", "Select a valid start date.");
+        if (!period.end) setError(form, calculator.id, "end", "Select a valid end date.");
         if (period.start && period.end && period.start > period.end) setError(form, calculator.id, "end", "End date must be on or after start date.");
       } else {
         const rawDays = form.elements.days.value.trim();

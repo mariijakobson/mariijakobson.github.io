@@ -51,7 +51,7 @@ window.FA_CHART_OF_ACCOUNTS = [
   { code: "1600", name: "Trade Settlement Receivable", nameEt: "Tehingute arveldusnõue", category: "Assets", key: false },
   { code: "1610", name: "Subscriptions Receivable", nameEt: "Märkimisnõue", category: "Assets", key: false },
   { code: "1620", name: "Unreconciled Cash Entries", nameEt: "Kooskõlastamata rahakanded", category: "Assets", key: false },
-  { code: "1630", name: "Corporate Actions Offset", nameEt: "Väärtpaberisündmuste vastukonto", category: "Assets", key: false },
+  { code: "1630", name: "Corporate Actions Offset", nameEt: "Väärtpaberisündmuste vastukonto", category: "Assets", key: true },
   { code: "1640", name: "Other receivables", nameEt: "Muud nõuded", category: "Assets", key: true },
   { code: "1641", name: "Other receivables2", nameEt: "Muud nõuded 2", category: "Assets", key: false },
   { code: "1650", name: "E unit subs-red offset", nameEt: "E-osakute märkimiste ja lunastuste vastukonto", category: "Assets", key: false },

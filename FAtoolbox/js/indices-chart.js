@@ -18,8 +18,12 @@ async function initialize() {
       ).sort((a, b) => a.date.localeCompare(b.date));
       const last = observations.at(-1);
       const previous = observations.at(-2);
-      const card = document.createElement("article");
+      const card = document.createElement("a");
       card.className = "index-card";
+      card.href = `https://finance.yahoo.com/quote/${encodeURIComponent(item.symbol)}/`;
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+      card.setAttribute("aria-label", `${item.name}: open Yahoo Finance in a new tab`);
       card.title = last ? `Close: ${dateLabel(last.date)}${previous ? ` · Compared with ${dateLabel(previous.date)}` : ""} · Yahoo Finance` : "Closing data unavailable";
       const name = document.createElement("h3");
       name.textContent = item.name;

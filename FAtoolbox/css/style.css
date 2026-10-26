@@ -635,7 +635,10 @@ main.toolbox-layout { position: relative; max-width: none; width: 100%; }
 .chart-code { font-variant-numeric: tabular-nums; color: #365b83; font-weight: 650; }
 .indices-panel { margin: 0 0 12px; padding: 10px 4px; background: #fff; border: 1px solid var(--border); border-radius: 9px; }
 .indices-values { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
-.index-card { min-width: 0; padding: 0 10px; }
+.index-card { display: block; min-width: 0; padding: 0 10px; color: inherit; text-decoration: none; border-radius: 3px; }
+.index-card:hover { background: #f4f7fc; }
+.index-card:hover h3 { text-decoration: underline; text-underline-offset: 2px; }
+.index-card:focus-visible { outline: 3px solid #8ab0ff; outline-offset: 3px; }
 .index-card + .index-card { border-left: 1px solid var(--border); }
 .index-card h3 { margin: 0 0 4px; color: #365b83; font-size: 11px; }
 .index-card p { margin: 4px 0 0; font-variant-numeric: tabular-nums; }

@@ -641,6 +641,8 @@ main.toolbox-layout { position: relative; max-width: none; width: 100%; }
 .index-card p { margin: 4px 0 0; font-variant-numeric: tabular-nums; }
 .index-card .index-close { display: inline; margin: 0; font-size: 16px; font-weight: 650; color: #243f60; white-space: nowrap; }
 .index-card .index-change { display: inline-block; margin: 0 0 0 6px; font-size: 11px; line-height: 1.5; white-space: nowrap; }
+.index-card .index-date { margin-top: 5px; font-size: 10px; color: var(--muted); }
+.indices-panel .chart-status { margin: 8px 10px 0; font-size: 10px; }
 .index-change.is-positive { color: #24734d; }
 .index-change.is-negative { color: #b52f36; }
 .index-change.is-unchanged { color: var(--muted); }

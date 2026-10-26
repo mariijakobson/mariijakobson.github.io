@@ -11,7 +11,8 @@ async function initialize() {
     if (!response.ok) throw new Error("Could not load closing data");
     const data = await response.json();
     if (!Array.isArray(data.series) || data.series.length !== 5) throw new Error("Invalid index data");
-    const elements = data.series.map(item => {
+    const ordered = [...data.series].sort((a, b) => Number(b.symbol === "^GSPC") - Number(a.symbol === "^GSPC"));
+    const elements = ordered.map(item => {
       const observations = (Array.isArray(item.observations) ? item.observations : []).filter(point =>
         /^\d{4}-\d{2}-\d{2}$/.test(point.date) && Number.isFinite(point.close) && point.close > 0
       ).sort((a, b) => a.date.localeCompare(b.date));
@@ -26,7 +27,7 @@ async function initialize() {
       value.className = "index-close";
       value.textContent = last ? number(last.close) : "Unavailable";
       const date = document.createElement("p");
-      date.className = "sr-only";
+      date.className = "index-date";
       date.textContent = last ? `Close · ${dateLabel(last.date)}` : "Closing data unavailable";
       const change = document.createElement("p");
       change.className = "index-change";
@@ -41,16 +42,16 @@ async function initialize() {
       } else {
         change.textContent = "Change unavailable";
       }
-      card.append(name, value, date, change, comparison);
+      card.append(name, value, change, date, comparison);
       return card;
     });
     cards.replaceChildren(...elements);
     const outdated = data.series.some(item => item.error || !Number.isFinite(Date.parse(item.fetchedAt)) || Date.now() - Date.parse(item.fetchedAt) > 36 * 60 * 60 * 1000);
     status.textContent = outdated
       ? "Data update is overdue or failed. Check the closing date shown for each index."
-      : "Previous trading-day closes · Yahoo Finance · Changes are compared with the preceding trading-day close.";
+      : "Previous trading-day closes · % change vs the preceding trading day · Yahoo Finance";
     status.classList.toggle("indices-warning", outdated);
-    status.classList.toggle("sr-only", !outdated);
+    status.classList.remove("sr-only");
   } catch {
     status.textContent = "Closing data could not be loaded. Try refreshing the page. Check the dates of any previously loaded values.";
     status.classList.add("indices-warning");

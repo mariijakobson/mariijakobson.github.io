@@ -58,9 +58,9 @@ change or rate-limit requests. This is a reference display, not an official valu
 
 The updater excludes the current exchange-local calendar date even after that exchange
 has closed. Weekends and holidays naturally retain the preceding available observation.
-The compact index strip above the debit/credit reference displays each index's name,
-closing value and percentage change from the preceding trading-day close. Closing and
-comparison dates are available in the hover tooltip and to screen readers. Missing
+The compact index strip above the debit/credit reference displays S&P 500 first, followed
+by the other indices, with closing values, closing dates and percentage changes from the
+preceding trading-day close. Comparison dates are available in the hover tooltip and to screen readers. Missing
 holiday observations are not replaced with invented values.
 
 Run `node scripts/update-indices.mjs` to refresh `data/indices.json`, and

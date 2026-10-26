@@ -598,9 +598,9 @@ input, select { border-radius: 6px; border-color: #ccd8e6; }
 
 
 /* Side reference stays independent of the calculator accordions. */
-main.toolbox-layout { position: relative; max-width: none; width: 100%; }
-.workspace-column { width: 100%; max-width: 900px; min-width: 0; margin: 0 auto; }
-.toolbox-layout > footer { max-width: 900px; margin: 0 auto; }
+main.toolbox-layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; align-items: start; gap: 16px 20px; max-width: 1440px; width: 100%; margin: 0 auto; padding: 20px 24px; }
+.workspace-column { min-width: 0; }
+.toolbox-layout > footer { grid-column: 1 / -1; margin: 0; }
 .chart-panel { background: #fff; border: 1px solid #d5dfeb; border-radius: 9px; padding: 14px; min-width: 0; }
 .chart-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 14px; }
 .chart-header h2 { font-size: 16px; color: #294967; margin: 0; }
@@ -666,16 +666,66 @@ main.toolbox-layout { position: relative; max-width: none; width: 100%; }
   .account-sides td { padding: 3px 2px; }
   .account-sides td span { font-size: 22px; margin-bottom: 2px; }
 }
-@media(min-width:1600px) {
-  .chart-panel {
-    position: absolute;
-    top: 16px;
-    left: calc(50% + 472px);
-    width: 290px;
-  }
+/* Balanced workbench: one centered grid and a restrained type scale. */
+.topbar { padding: 0 max(24px, calc((100vw - 1440px) / 2 + 24px)); }
+.chart-panel { position: sticky; top: 16px; padding: 16px; }
+.chart-header h2 { font-size: 18px; }
+.chart-list { max-height: min(680px, calc(100vh - 230px)); }
+.chart-list li { align-items: center; padding: 3px 0; font-size: 14px; min-height: 30px; }
+.chart-copy { width: 24px; height: 24px; }
+.indices-panel, .accounts-panel { border-color: #dce5ef; }
+.indices-panel { margin-bottom: 16px; }
+.index-card h3 { font-size: 12px; }
+.index-card .index-close { font-size: 16px; }
+.index-card .index-change { font-size: 11px; }
+.section-label { font-size: 12px; letter-spacing: .3px; margin: 16px 0 10px; }
+.calculator { border-color: #dce5ef; box-shadow: none; margin-bottom: 12px; }
+.accordion { background: #fff; padding: 13px 16px; border-left: 0; }
+.accordion:hover { background: #f4f7fb; }
+.accordion[aria-expanded=true] { background: #e8f1fb; border-left-color: transparent; }
+.heading-copy strong { font-size: 18px; color: #243f60; font-weight: 650; }
+.heading-copy small { color: #62738a; font-size: 13px; }
+.chevron { border-color: #6683a3; }
+.tool-icon { width: 32px; height: 32px; font-size: 19px; background: #eaf1f8; }
+.accordion[aria-expanded=true] .tool-icon { background: #386494; color: #fff; }
+.panel { grid-template-columns: minmax(0, 1.5fr) minmax(230px, 1fr); gap: 20px; padding: 18px 16px; }
+.fields { gap: 10px 14px; }
+label, .mode-choice legend { font-size: 14px; font-weight: 500; }
+input, select { height: 38px; font-size: 14px; }
+.hint { font-size: 12px; line-height: 1.5; }
+button.primary, button.reset { min-height: 38px; font-size: 14px; padding: 8px 18px; }
+.actions { gap: 12px; margin-top: 16px; }
+.result { display: block; padding: 14px 16px; background: #edf3fa; border: 0; }
+.metrics { min-width: 0; }
+#nav-panel .metrics { display: block; }
+.metric-label { font-size: 13px; }
+.value, .metric+.metric .value { font-size: 24px; line-height: 1.35; font-weight: 600; }
+.metric+.metric, #nav-panel .metric+.metric { border: 0; padding: 0; margin-top: 10px; }
+.details-button, #nav-panel .details-button { display: block; background: none; border: 0; border-top: 1px solid #d4e1ef; color: #386494; font-size: 13px; font-weight: 500; padding: 10px 0 0; margin-top: 12px; min-height: 30px; width: 100%; text-align: left; }
+.details-button:disabled { color: #62738a; }
+.calculation { margin-top: 10px; padding-top: 10px; font-size: 12px; line-height: 1.6; }
+@media(max-width:1199px) {
+  main.toolbox-layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; padding: 16px; }
+  .panel { grid-template-columns: 1fr; }
+  #nav-panel .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #nav-panel .metric+.metric { margin-top: 0; }
+  .index-card { padding: 0 7px; }
+  .index-card .index-close { font-size: 15px; }
 }
-@media(max-width:1599px) {
-  .chart-panel { width: 100%; max-width: 900px; margin: 14px auto 0; }
+@media(max-width:999px) {
+  main.toolbox-layout { display: block; max-width: 900px; }
+  .chart-panel { position: static; margin-top: 16px; }
   .chart-list { max-height: 520px; }
+}
+@media(max-width:700px) {
+  main.toolbox-layout { padding: 12px 14px; }
+  .topbar { padding: 0 18px; }
+  .accordion { padding: 12px; }
+  .panel { padding: 14px 12px; gap: 14px; }
+  input, select { min-height: 44px; font-size: 16px; }
+  button.primary, button.reset { min-height: 44px; }
+  .heading-copy small { font-size: 12px; }
+  .chart-list li { min-height: 36px; }
+  .chart-copy { width: 32px; height: 32px; }
 }
 

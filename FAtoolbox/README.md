@@ -58,10 +58,9 @@ change or rate-limit requests. This is a reference display, not an official valu
 
 The updater excludes the current exchange-local calendar date even after that exchange
 has closed. Weekends and holidays naturally retain the preceding available observation.
-Each index displays its own closing date. The common chart shows the last five observed
-trading dates with each series rebased to its first displayed close = 100. Missing holiday
-observations are not replaced with invented values. Select an index for actual closes
-and changes from its preceding available trading observation.
+Each index card displays its closing value and date, plus the point and percentage
+change from its preceding available trading-day close. The comparison date is shown
+below the change. Missing holiday observations are not replaced with invented values.
 
 Run `node scripts/update-indices.mjs` to refresh `data/indices.json`, and
 `node tests/indices.test.mjs` to check the closing-date rules. A failed download retains

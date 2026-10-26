@@ -6,14 +6,14 @@
   <meta name="description" content="Simple, private calculators for NAV impact, annual fees and accrued bond interest.">
   <title>FA Toolbox</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232557df'/%3E%3Cpath d='M12 29V11h17v4H17v4h10v4H17v6' fill='white'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="css/style.css?v=20261026-1">
+  <link rel="stylesheet" href="css/style.css?v=20261026-2">
   <script src="js/utils.js" defer></script>
   <script src="js/calculators/nav-impact.js" defer></script>
   <script src="js/calculators/fee-calculator.js" defer></script>
   <script src="js/calculators/bond-interest.js" defer></script>
   <script src="data/accounts.js" defer></script>
   <script src="js/chart-of-accounts.js?v=20261026-1" defer></script>
-  <script src="js/indices-chart.js" defer></script>
+  <script src="js/indices-chart.js?v=20261026-2" defer></script>
   <script src="js/app.js?v=20261026-1" defer></script>
 </head>
 <body>
@@ -43,10 +43,8 @@
       </div>
     </section>
     <section class="indices-panel" aria-labelledby="indices-title">
-      <div class="chart-header"><h2 id="indices-title">Index closing values</h2><button id="indices-reset" class="reset" type="button">Show all</button></div>
-      <p class="hint">Last 5 trading dates. Hover or select an index to see its closing values and daily changes.</p>
-      <div id="indices-legend" class="indices-legend" aria-label="Select an index"></div>
-      <div id="indices-chart" class="indices-chart"></div>
+      <div class="chart-header"><h2 id="indices-title">Index closing values</h2></div>
+      <div id="indices-values" class="indices-values"></div>
       <p id="indices-status" class="chart-status" role="status">Loading previous trading-day closes…</p>
     </section>
     <div class="section-label"><span>YOUR CALCULATORS</span><span id="tool-count">00 tools</span></div>

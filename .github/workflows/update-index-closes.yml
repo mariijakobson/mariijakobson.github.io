@@ -1,0 +1,61 @@
+name: Update index closing values
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/update-index-closes.yml'
+      - 'FAtoolbox/scripts/update-indices.mjs'
+      - 'FAtoolbox/tests/indices.test.mjs'
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: index-closing-values
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Locate toolbox
+        shell: bash
+        run: |
+          if [ -f FAtoolbox/scripts/update-indices.mjs ]; then
+            echo 'TOOLBOX_PATH=FAtoolbox' >> "$GITHUB_ENV"
+          else
+            echo 'TOOLBOX_PATH=.' >> "$GITHUB_ENV"
+          fi
+      - name: Check closing-date rules
+        run: node "$TOOLBOX_PATH/tests/indices.test.mjs"
+      - name: Download daily closing observations
+        id: download
+        continue-on-error: true
+        run: node "$TOOLBOX_PATH/scripts/update-indices.mjs"
+      - name: Publish updated data and failure status
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$TOOLBOX_PATH/data/indices.json"
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update daily index closing data'
+            git push
+          fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds"
+      - name: Report incomplete data update
+        if: steps.download.outcome == 'failure'
+        run: |
+          echo 'One or more indices failed to update. Previous values and warning status were retained.'
+          exit 1

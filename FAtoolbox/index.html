@@ -13,10 +13,11 @@
   <script src="js/calculators/bond-interest.js" defer></script>
   <script src="data/accounts.js" defer></script>
   <script src="js/chart-of-accounts.js" defer></script>
+  <script src="js/indices-chart.js" defer></script>
   <script src="js/app.js" defer></script>
 </head>
 <body>
-  <header class="topbar"><div class="brand"><span class="brand-mark" aria-hidden="true">FA</span><h1>FA Toolbox</h1></div><span class="top-note">FUND ADMINISTRATION</span></header>
+  <header class="topbar"><div class="brand"><span class="brand-mark" aria-hidden="true">FA</span><h1>FA Toolbox</h1></div><div class="topbar-info"><span class="top-note">FUND ADMINISTRATION</span><time id="current-datetime" class="current-datetime" aria-label="Local date and time"></time></div></header>
   <main class="toolbox-layout">
     <div class="workspace-column">
     <section class="account-reference" lang="en" aria-label="Debit and credit reference">
@@ -41,6 +42,13 @@
         </div>
       </div>
     </section>
+    <section class="indices-panel" aria-labelledby="indices-title">
+      <div class="chart-header"><h2 id="indices-title">Index closing values</h2><button id="indices-reset" class="reset" type="button">Show all</button></div>
+      <p class="hint">Last 5 trading dates. Hover or select an index to see its closing values and daily changes.</p>
+      <div id="indices-legend" class="indices-legend" aria-label="Select an index"></div>
+      <div id="indices-chart" class="indices-chart"></div>
+      <p id="indices-status" class="chart-status" role="status">Loading previous trading-day closes…</p>
+    </section>
     <div class="section-label"><span>YOUR CALCULATORS</span><span id="tool-count">00 tools</span></div>
     <div id="calculators"></div>
     <noscript><p>Please enable JavaScript to use these calculators. All calculations run in your browser.</p></noscript>
@@ -53,7 +61,8 @@
       <p class="chart-status" id="chart-status" role="status"></p>
       <ul class="chart-list" id="chart-list" aria-label="Accounts"></ul>
     </aside>
-    <footer><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="6" y="10" width="12" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"/></svg><span>No data is stored. All calculations are performed in your browser.</span></footer>
+    <footer><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="6" y="10" width="12" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"/></svg><span>Calculator inputs are not stored. All calculations are performed in your browser.</span></footer>
   </main>
+  <div id="copy-notification" class="copy-notification" role="status" aria-atomic="true"></div>
 </body>
 </html>

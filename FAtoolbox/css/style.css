@@ -610,8 +610,45 @@ main.toolbox-layout { position: relative; max-width: none; width: 100%; }
 .chart-filters button[aria-pressed="true"] { background: #496d96; color: white; }
 .chart-status { color: #62738a; font-size: 12px; line-height: 1.5; margin: 10px 0; }
 .chart-list { list-style: none; padding: 0; margin: 0; max-height: 600px; overflow-y: auto; }
-.chart-list li { display: grid; grid-template-columns: minmax(46px, auto) minmax(0, 1fr); gap: 8px; padding: 6px 0; border-top: 1px solid #e7edf4; font-size: 13px; line-height: 1.3; overflow-wrap: anywhere; }
+.chart-list li { display: grid; grid-template-columns: minmax(46px, auto) minmax(0, 1fr) auto; align-items: start; gap: 8px; padding: 6px 0; border-top: 1px solid #e7edf4; font-size: 13px; line-height: 1.3; overflow-wrap: anywhere; }
+.chart-account-name { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chart-copy { position: relative; display: grid; place-items: center; border: 0; border-radius: 2px; background: transparent; color: #365b83; width: 16px; height: 16px; padding: 0; font-size: 12px; line-height: 1; }
+.chart-copy::before, .chart-copy::after { content: ""; position: absolute; width: 6px; height: 8px; border: 1px solid currentColor; border-radius: 1px; }
+.chart-copy::before { transform: translate(-2px, -2px); }
+.chart-copy::after { background: #f4f7fc; transform: translate(1px, 1px); }
+.chart-copy[data-state]::before { display: none; }
+.chart-copy[data-state]::after { position: static; width: auto; height: auto; border: 0; background: transparent; transform: none; }
+.chart-copy[data-state="copied"]::after { content: "\2713"; }
+.chart-copy[data-state="error"]::after { content: "!"; }
+.chart-copy:hover { background: #e5edfb; }
+.chart-copy:disabled { cursor: wait; }
+.clipboard-input { position: fixed; left: -9999px; top: 0; }
+.copy-notification { position: fixed; top: 72px; right: 18px; z-index: 100; max-width: calc(100vw - 36px); padding: 12px 16px; border-radius: 7px; background: #365b83; color: #fff; box-shadow: 0 4px 16px #182b4633; font-size: 14px; line-height: 1.5; font-weight: 600; opacity: 0; visibility: hidden; pointer-events: none; }
+.copy-notification.is-visible { opacity: 1; visibility: visible; }
+.copy-notification.is-error { background: #963b40; }
+.topbar-info { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding: 8px 0; }
+.current-datetime { color: #536d8b; font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media(max-width:460px) {
+  .topbar { gap: 10px; }
+  .current-datetime { font-size: 11px; }
+}
 .chart-code { font-variant-numeric: tabular-nums; color: #365b83; font-weight: 650; }
+.indices-panel { margin-top: 14px; padding: 14px; background: #fff; border: 1px solid var(--border); border-radius: 9px; }
+.indices-panel .chart-header { margin-bottom: 6px; }
+.indices-panel h2 { font-size: 16px; margin: 0; }
+.indices-panel .reset { padding: 5px 9px; border-radius: 5px; font-size: 12px; }
+.indices-legend { display: flex; flex-wrap: wrap; gap: 7px; margin: 12px 0; }
+.index-legend-button { display: grid; gap: 4px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 5px; background: #fff; text-align: left; font-size: 12px; }
+.index-legend-button span { color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+.index-legend-button.is-muted { opacity: .45; }
+.index-legend-button[aria-pressed="true"] { background: #edf3f9; border-color: var(--blue); }
+.indices-chart { overflow-x: auto; }
+.indices-chart svg { display: block; width: 100%; min-width: 620px; }
+.index-grid { stroke: #e7edf4; }
+.index-axis { fill: #62738a; font-size: 11px; }
+.index-line-label, .index-point-value, .index-point-change { font-size: 11px; }
+.index-point-value { fill: #182b46; font-weight: 600; }
+.indices-warning { color: #9b4e20; }
 @media(min-width:1600px) {
   .chart-panel {
     position: absolute;

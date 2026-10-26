@@ -1,0 +1,220 @@
+{
+  "attemptedAt": "2026-10-26T19:26:49.750Z",
+  "series": [
+    {
+      "name": "Nasdaq-100",
+      "symbol": "^NDX",
+      "timezone": "America/New_York",
+      "color": "#386494",
+      "source": "https://finance.yahoo.com/quote/%5ENDX/history/",
+      "observations": [
+        {
+          "date": "2026-10-14",
+          "close": 29950.8203125
+        },
+        {
+          "date": "2026-10-15",
+          "close": 29935.599609375
+        },
+        {
+          "date": "2026-10-16",
+          "close": 29187.55078125
+        },
+        {
+          "date": "2026-10-19",
+          "close": 29529.349609375
+        },
+        {
+          "date": "2026-10-20",
+          "close": 29490.279296875
+        },
+        {
+          "date": "2026-10-21",
+          "close": 29822.51953125
+        },
+        {
+          "date": "2026-10-22",
+          "close": 28958.689453125
+        },
+        {
+          "date": "2026-10-23",
+          "close": 28957.529296875
+        }
+      ],
+      "fetchedAt": "2026-10-26T19:26:49.750Z",
+      "error": null
+    },
+    {
+      "name": "OMXS30",
+      "symbol": "^OMX",
+      "timezone": "Europe/Stockholm",
+      "color": "#ae7c27",
+      "source": "https://finance.yahoo.com/quote/%5EOMX/history/",
+      "observations": [
+        {
+          "date": "2026-10-14",
+          "close": 3276.27001953125
+        },
+        {
+          "date": "2026-10-15",
+          "close": 3256.080078125
+        },
+        {
+          "date": "2026-10-16",
+          "close": 3296.840087890625
+        },
+        {
+          "date": "2026-10-19",
+          "close": 3267.60009765625
+        },
+        {
+          "date": "2026-10-20",
+          "close": 3238.639892578125
+        },
+        {
+          "date": "2026-10-21",
+          "close": 3244.070068359375
+        },
+        {
+          "date": "2026-10-22",
+          "close": 3162.780029296875
+        },
+        {
+          "date": "2026-10-23",
+          "close": 3175.699951171875
+        }
+      ],
+      "fetchedAt": "2026-10-26T19:26:49.750Z",
+      "error": null
+    },
+    {
+      "name": "Nikkei 225",
+      "symbol": "^N225",
+      "timezone": "Asia/Tokyo",
+      "color": "#b65d64",
+      "source": "https://finance.yahoo.com/quote/%5EN225/history/",
+      "observations": [
+        {
+          "date": "2026-10-14",
+          "close": 67744.2890625
+        },
+        {
+          "date": "2026-10-15",
+          "close": 64425.94921875
+        },
+        {
+          "date": "2026-10-16",
+          "close": 65324.2890625
+        },
+        {
+          "date": "2026-10-19",
+          "close": 64916.69921875
+        },
+        {
+          "date": "2026-10-20",
+          "close": 64075.421875
+        },
+        {
+          "date": "2026-10-21",
+          "close": 64621.23828125
+        },
+        {
+          "date": "2026-10-22",
+          "close": 62907.83984375
+        },
+        {
+          "date": "2026-10-23",
+          "close": 62693.16015625
+        }
+      ],
+      "fetchedAt": "2026-10-26T19:26:49.750Z",
+      "error": null
+    },
+    {
+      "name": "EURO STOXX 50",
+      "symbol": "^STOXX50E",
+      "timezone": "Europe/Zurich",
+      "color": "#8171b1",
+      "source": "https://finance.yahoo.com/quote/%5ESTOXX50E/history/",
+      "observations": [
+        {
+          "date": "2026-10-14",
+          "close": 6190.3701171875
+        },
+        {
+          "date": "2026-10-15",
+          "close": 6168.259765625
+        },
+        {
+          "date": "2026-10-16",
+          "close": 6204.22998046875
+        },
+        {
+          "date": "2026-10-19",
+          "close": 6144.81005859375
+        },
+        {
+          "date": "2026-10-20",
+          "close": 6121.66015625
+        },
+        {
+          "date": "2026-10-21",
+          "close": 6207.52001953125
+        },
+        {
+          "date": "2026-10-22",
+          "close": 6087.009765625
+        },
+        {
+          "date": "2026-10-23",
+          "close": 6068.22021484375
+        }
+      ],
+      "fetchedAt": "2026-10-26T19:26:49.750Z",
+      "error": null
+    },
+    {
+      "name": "S&P 500",
+      "symbol": "^GSPC",
+      "timezone": "America/New_York",
+      "color": "#278679",
+      "source": "https://finance.yahoo.com/quote/%5EGSPC/history/",
+      "observations": [
+        {
+          "date": "2026-10-14",
+          "close": 7718.93994140625
+        },
+        {
+          "date": "2026-10-15",
+          "close": 7744.06005859375
+        },
+        {
+          "date": "2026-10-16",
+          "close": 7659.43994140625
+        },
+        {
+          "date": "2026-10-19",
+          "close": 7690.72998046875
+        },
+        {
+          "date": "2026-10-20",
+          "close": 7712.56982421875
+        },
+        {
+          "date": "2026-10-21",
+          "close": 7757.169921875
+        },
+        {
+          "date": "2026-10-22",
+          "close": 7663.43017578125
+        },
+        {
+          "date": "2026-10-23",
+          "close": 7623.68017578125
+        }
+      ],
+      "fetchedAt": "2026-10-26T19:26:49.750Z",
+      "error": null
+    }
+  ]
+}

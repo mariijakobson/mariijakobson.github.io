@@ -48,3 +48,33 @@ node tests/calculations.test.js
 ```
 
 The application itself has no runtime dependency on Node.js.
+
+## Daily index closing values
+
+The index panel shows Nasdaq-100, OMXS30, Nikkei 225, EURO STOXX 50 and S&P 500.
+It uses daily closes from Yahoo Finance's publicly accessible, undocumented chart endpoint.
+No paid account or API key is used. This endpoint has no availability guarantee and may
+change or rate-limit requests. This is a reference display, not an official valuation feed.
+
+The updater excludes the current exchange-local calendar date even after that exchange
+has closed. Weekends and holidays naturally retain the preceding available observation.
+Each index displays its own closing date. The common chart shows the last five observed
+trading dates with each series rebased to its first displayed close = 100. Missing holiday
+observations are not replaced with invented values. Select an index for actual closes
+and changes from its preceding available trading observation.
+
+Run `node scripts/update-indices.mjs` to refresh `data/indices.json`, and
+`node tests/indices.test.mjs` to check the closing-date rules. A failed download retains
+that index's previous observations and records an error for the page to display.
+The page checks for a newer published data file hourly and warns when updates are overdue.
+Serve this folder over HTTP to view the index panel locally; the calculators still work
+when opening `index.html` directly.
+
+For the existing GitHub Pages repository, place the supplied workflow at the repository
+root `.github/workflows/update-index-closes.yml`, alongside the `FAtoolbox/` folder.
+It runs at 05:17 UTC daily (07:17 in Estonia in winter, 08:17 in summer), saves only the
+index data file, and explicitly requests a Pages rebuild. It needs GitHub Actions enabled
+with Contents and Pages write permissions and branch-based Pages publishing from the
+default branch. The schedule is active only once installed in that default branch.
+Run it manually after installation to verify the full download and publication path;
+GitHub may delay scheduled runs. No API key or additional secret is needed.

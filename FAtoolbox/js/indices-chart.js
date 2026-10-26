@@ -3,7 +3,7 @@
 const cards = document.getElementById("indices-values");
 const status = document.getElementById("indices-status");
 const number = value => new Intl.NumberFormat("et-EE", { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(value);
-const signed = value => `${value > 0 ? "+" : ""}${number(value)}`;
+const signed = value => `${value > 0 ? "+" : ""}${new Intl.NumberFormat("et-EE", { minimumFractionDigits: 2, maximumFractionDigits: value !== 0 && Math.abs(value) < .01 ? 3 : 2 }).format(value)}`;
 const dateLabel = value => new Intl.DateTimeFormat("et-EE", { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(value + "T12:00:00Z"));
 async function initialize() {
   try {
@@ -12,18 +12,19 @@ async function initialize() {
     const data = await response.json();
     if (!Array.isArray(data.series) || data.series.length !== 5) throw new Error("Invalid index data");
     const ordered = [...data.series].sort((a, b) => Number(b.symbol === "^GSPC") - Number(a.symbol === "^GSPC"));
+    const closingDates = [];
     const elements = ordered.map(item => {
       const observations = (Array.isArray(item.observations) ? item.observations : []).filter(point =>
         /^\d{4}-\d{2}-\d{2}$/.test(point.date) && Number.isFinite(point.close) && point.close > 0
       ).sort((a, b) => a.date.localeCompare(b.date));
       const last = observations.at(-1);
       const previous = observations.at(-2);
+      closingDates.push(last?.date || null);
       const card = document.createElement("a");
       card.className = "index-card";
       card.href = `https://finance.yahoo.com/quote/${encodeURIComponent(item.symbol)}/`;
       card.target = "_blank";
       card.rel = "noopener noreferrer";
-      card.setAttribute("aria-label", `${item.name}: open Yahoo Finance in a new tab`);
       card.title = last ? `Close: ${dateLabel(last.date)}${previous ? ` · Compared with ${dateLabel(previous.date)}` : ""} · Yahoo Finance` : "Closing data unavailable";
       const name = document.createElement("h3");
       name.textContent = item.name;
@@ -49,11 +50,21 @@ async function initialize() {
       card.append(name, value, change, date, comparison);
       return card;
     });
+    const commonDate = closingDates.every(date => date && date === closingDates[0]);
+    document.getElementById("indices-date").textContent = commonDate ? dateLabel(closingDates[0]) : "Dates vary by market";
+    elements.forEach(card => {
+      const date = card.querySelector(".index-date");
+      date.classList.toggle("sr-only", commonDate);
+      const linkHint = document.createElement("span");
+      linkHint.className = "sr-only";
+      linkHint.textContent = "Open Yahoo Finance in a new tab";
+      card.append(linkHint);
+    });
     cards.replaceChildren(...elements);
     const outdated = data.series.some(item => item.error || !Number.isFinite(Date.parse(item.fetchedAt)) || Date.now() - Date.parse(item.fetchedAt) > 36 * 60 * 60 * 1000);
     status.textContent = outdated
       ? "Data update is overdue or failed. Check the closing date shown for each index."
-      : "Previous trading-day closes · % change vs the preceding trading day · Yahoo Finance";
+      : "% change vs previous close · Select an index to open Yahoo Finance";
     status.classList.toggle("indices-warning", outdated);
     status.classList.remove("sr-only");
   } catch {

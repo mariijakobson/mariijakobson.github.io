@@ -635,19 +635,22 @@ main.toolbox-layout { position: relative; max-width: none; width: 100%; }
 .chart-code { font-variant-numeric: tabular-nums; color: #365b83; font-weight: 650; }
 .indices-panel { margin: 0 0 12px; padding: 10px 4px; background: #fff; border: 1px solid var(--border); border-radius: 9px; }
 .indices-values { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.indices-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 10px 12px; }
+.indices-header h2 { margin: 0; color: #526b87; font-size: 12px; font-weight: 600; }
+.indices-header span { color: #526b87; font-size: 12px; font-variant-numeric: tabular-nums; }
 .index-card { display: block; min-width: 0; padding: 0 10px; color: inherit; text-decoration: none; border-radius: 3px; }
 .index-card:hover { background: #f4f7fc; }
 .index-card:hover h3 { text-decoration: underline; text-underline-offset: 2px; }
 .index-card:focus-visible { outline: 3px solid #8ab0ff; outline-offset: 3px; }
 .index-card + .index-card { border-left: 1px solid var(--border); }
-.index-card h3 { margin: 0 0 4px; color: #365b83; font-size: 11px; }
+.index-card h3 { margin: 0 0 6px; color: #365b83; font-size: 12px; font-weight: 600; }
 .index-card p { margin: 4px 0 0; font-variant-numeric: tabular-nums; }
-.index-card .index-close { display: inline; margin: 0; font-size: 16px; font-weight: 650; color: #243f60; white-space: nowrap; }
-.index-card .index-change { display: inline-block; margin: 0 0 0 6px; font-size: 11px; line-height: 1.5; white-space: nowrap; }
+.index-card .index-close { display: inline; margin: 0; font-size: 18px; font-weight: 650; color: #243f60; white-space: nowrap; }
+.index-card .index-change { display: inline-block; margin: 4px 0 0 5px; padding: 2px 4px; border-radius: 4px; font-size: 11px; font-weight: 600; line-height: 1.4; white-space: nowrap; }
 .index-card .index-date { margin-top: 5px; font-size: 10px; color: var(--muted); }
-.indices-panel .chart-status { margin: 8px 10px 0; font-size: 10px; }
-.index-change.is-positive { color: #24734d; }
-.index-change.is-negative { color: #b52f36; }
+.indices-panel .chart-status { margin: 12px 10px 0; font-size: 11px; }
+.index-change.is-positive { color: #216440; background: #eaf5ee; }
+.index-change.is-negative { color: #a82d35; background: #fceef0; }
 .index-change.is-unchanged { color: var(--muted); }
 @media(max-width:760px) {
   .indices-values { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 0; }
@@ -658,7 +661,7 @@ main.toolbox-layout { position: relative; max-width: none; width: 100%; }
   .indices-panel, .accounts-panel { height: 132px; }
   .indices-panel { display: flex; flex-direction: column; justify-content: center; }
   .accounts-panel { padding: 10px 14px; }
-  .account-card h3 { min-height: 28px; margin-bottom: 4px; padding: 2px 31px; }
+  .account-card h3 { min-height: 28px; margin-bottom: 4px; padding: 2px 31px; font-size: 12px; letter-spacing: .3px; font-weight: 600; }
   .account-sides th { padding: 4px; }
   .account-sides td { padding: 3px 2px; }
   .account-sides td span { font-size: 22px; margin-bottom: 2px; }

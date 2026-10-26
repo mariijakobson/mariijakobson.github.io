@@ -729,3 +729,21 @@ button.primary, button.reset { min-height: 38px; font-size: 14px; padding: 8px 1
   .chart-copy { width: 32px; height: 32px; }
 }
 
+/* Compact market summary; keep the selected light workbench palette. */
+.indices-header { margin-bottom: 6px; }
+.index-card h3 { margin-bottom: 3px; }
+.index-card .index-change { display: table; margin: 0; padding: 1px 4px; font-size: 16px; }
+.index-card .index-close { display: block; margin-top: 3px; color: #62738a; font-size: 12px; font-weight: 400; }
+.indices-panel { background: #fff; border-top: 3px solid #7897b8; }
+.accounts-panel, .chart-panel, .calculator { background: #fff; }
+.chart-panel { border-top: 3px solid #7897b8; }
+.accordion, .accordion[aria-expanded=true] { background: #fff; }
+.accordion[aria-expanded=true] { box-shadow: inset 3px 0 #386494; }
+.accordion:hover { background: #f7f9fc; }
+.accordion[aria-expanded=true] .heading-copy strong { color: #2d537d; }
+.result { background: #fff; border: 1px solid #d5dfeb; border-left: 3px solid #7897b8; }
+@media(min-width:761px) {
+  .indices-panel { height: 104px; }
+  .indices-panel:has(.indices-warning:not(.sr-only)) { height: auto; min-height: 104px; }
+}
+

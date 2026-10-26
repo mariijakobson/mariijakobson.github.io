@@ -47,7 +47,7 @@ async function initialize() {
       } else {
         change.textContent = "Change unavailable";
       }
-      card.append(name, value, change, date, comparison);
+      card.append(name, change, value, date, comparison);
       return card;
     });
     const commonDate = closingDates.every(date => date && date === closingDates[0]);
@@ -66,7 +66,7 @@ async function initialize() {
       ? "Data update is overdue or failed. Check the closing date shown for each index."
       : "% change vs previous close · Select an index to open Yahoo Finance";
     status.classList.toggle("indices-warning", outdated);
-    status.classList.remove("sr-only");
+    status.classList.toggle("sr-only", !outdated);
   } catch {
     status.textContent = "Closing data could not be loaded. Try refreshing the page. Check the dates of any previously loaded values.";
     status.classList.add("indices-warning");

@@ -598,7 +598,7 @@ input, select { border-radius: 6px; border-color: #ccd8e6; }
 
 
 /* Side reference stays independent of the calculator accordions. */
-main.toolbox-layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; align-items: start; gap: 16px 20px; max-width: 1440px; width: 100%; margin: 0 auto; padding: 20px 24px; }
+main.toolbox-layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; align-items: start; gap: 16px 20px; max-width: 1320px; width: 100%; margin: 0 auto; padding: 20px 24px; }
 .workspace-column { min-width: 0; }
 .toolbox-layout > footer { grid-column: 1 / -1; margin: 0; }
 .chart-panel { background: #fff; border: 1px solid #d5dfeb; border-radius: 9px; padding: 14px; min-width: 0; }
@@ -667,7 +667,7 @@ main.toolbox-layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px
   .account-sides td span { font-size: 22px; margin-bottom: 2px; }
 }
 /* Balanced workbench: one centered grid and a restrained type scale. */
-.topbar { padding: 0 max(24px, calc((100vw - 1440px) / 2 + 24px)); }
+.topbar { padding: 0 max(24px, calc((100vw - 1320px) / 2 + 24px)); }
 .chart-panel { position: sticky; top: 16px; padding: 16px; }
 .chart-header h2 { font-size: 18px; }
 .chart-list { max-height: min(680px, calc(100vh - 230px)); }

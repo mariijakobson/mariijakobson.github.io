@@ -58,9 +58,10 @@ change or rate-limit requests. This is a reference display, not an official valu
 
 The updater excludes the current exchange-local calendar date even after that exchange
 has closed. Weekends and holidays naturally retain the preceding available observation.
-Each index card displays its closing value and date, plus the point and percentage
-change from its preceding available trading-day close. The comparison date is shown
-below the change. Missing holiday observations are not replaced with invented values.
+The compact index strip above the debit/credit reference displays each index's name,
+closing value and percentage change from the preceding trading-day close. Closing and
+comparison dates are available in the hover tooltip and to screen readers. Missing
+holiday observations are not replaced with invented values.
 
 Run `node scripts/update-indices.mjs` to refresh `data/indices.json`, and
 `node tests/indices.test.mjs` to check the closing-date rules. A failed download retains

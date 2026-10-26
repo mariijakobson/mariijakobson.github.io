@@ -633,21 +633,21 @@ main.toolbox-layout { position: relative; max-width: none; width: 100%; }
   .current-datetime { font-size: 11px; }
 }
 .chart-code { font-variant-numeric: tabular-nums; color: #365b83; font-weight: 650; }
-.indices-panel { margin-top: 14px; padding: 14px; background: #fff; border: 1px solid var(--border); border-radius: 9px; }
-.indices-panel .chart-header { margin-bottom: 6px; }
-.indices-panel h2 { font-size: 16px; margin: 0; }
-.indices-values { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
-.index-card { min-width: 0; padding: 10px; background: #f4f7fc; border: 1px solid var(--border); border-radius: 6px; }
-.index-card h3 { margin: 0 0 8px; color: #365b83; font-size: 12px; }
+.indices-panel { margin: 0 0 12px; padding: 10px 4px; background: #fff; border: 1px solid var(--border); border-radius: 9px; }
+.indices-values { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.index-card { min-width: 0; padding: 0 10px; }
+.index-card + .index-card { border-left: 1px solid var(--border); }
+.index-card h3 { margin: 0 0 4px; color: #365b83; font-size: 11px; }
 .index-card p { margin: 4px 0 0; font-variant-numeric: tabular-nums; }
-.index-close { font-size: 20px; font-weight: 650; color: #243f60; }
-.index-close-date, .index-comparison { font-size: 11px; color: var(--muted); }
-.index-change { font-size: 12px; line-height: 1.5; }
+.index-card .index-close { display: inline; margin: 0; font-size: 16px; font-weight: 650; color: #243f60; white-space: nowrap; }
+.index-card .index-change { display: inline-block; margin: 0 0 0 6px; font-size: 11px; line-height: 1.5; white-space: nowrap; }
 .index-change.is-positive { color: #24734d; }
 .index-change.is-negative { color: #b52f36; }
 .index-change.is-unchanged { color: var(--muted); }
-@media(max-width:760px) { .indices-values { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media(max-width:360px) { .indices-values { grid-template-columns: 1fr; } }
+@media(max-width:760px) {
+  .indices-values { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 0; }
+  .index-card:nth-child(odd) { border-left: 0; }
+}
 .indices-warning { color: #9b4e20; }
 @media(min-width:1600px) {
   .chart-panel {

@@ -66,15 +66,25 @@ holiday observations are not replaced with invented values.
 Run `node scripts/update-indices.mjs` to refresh `data/indices.json`, and
 `node tests/indices.test.mjs` to check the closing-date rules. A failed download retains
 that index's previous observations and records an error for the page to display.
-The page checks for a newer published data file hourly and warns when updates are overdue.
+The page checks for a newer published data file every five minutes, with a 15-second request timeout.
+After 07:00 UTC it warns if any index has not refreshed that UTC day; before then it expects
+the preceding day. This checks download freshness, not a holiday-aware trading calendar.
+Older source history never replaces a newer published closing date.
 Serve this folder over HTTP to view the index panel locally; the calculators still work
 when opening `index.html` directly.
 
 For the existing GitHub Pages repository, place the supplied workflow at the repository
 root `.github/workflows/update-index-closes.yml`, alongside the `FAtoolbox/` folder.
-It runs at 05:17 UTC daily (07:17 in Estonia in winter, 08:17 in summer), saves only the
-index data file, and explicitly requests a Pages rebuild. It needs GitHub Actions enabled
+It runs daily at 04:17, 05:17, 06:17, 08:17 and 10:17 UTC (add two hours in Estonia
+in winter, three in summer). Later runs provide recovery opportunities for a missed schedule
+or a temporary source failure. GitHub scheduling remains best-effort. The updater checks out
+current main even on reruns, saves only the index data file, and explicitly requests a Pages
+rebuild. Concurrent branch changes trigger up to three publication attempts, regenerating
+data against current main rather than overwriting others’ commits. Pages requests are retried. It needs GitHub Actions enabled
 with Contents and Pages write permissions and branch-based Pages publishing from the
 default branch. The schedule is active only once installed in that default branch.
 Run it manually after installation to verify the full download and publication path;
 GitHub may delay scheduled runs. No API key or additional secret is needed.
+
+
+All calculator panels start collapsed on page load.

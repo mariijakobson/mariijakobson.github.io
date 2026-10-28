@@ -7,7 +7,7 @@ const signed = value => `${value > 0 ? "+" : ""}${new Intl.NumberFormat("et-EE",
 const dateLabel = value => new Intl.DateTimeFormat("et-EE", { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(value + "T12:00:00Z"));
 async function initialize() {
   try {
-    const response = await fetch("data/indices.json", { cache: "no-store" });
+    const response = await fetch("data/indices.json", { cache: "no-store", signal: AbortSignal.timeout(15000) });
     if (!response.ok) throw new Error("Could not load closing data");
     const data = await response.json();
     if (!Array.isArray(data.series) || data.series.length !== 5) throw new Error("Invalid index data");
@@ -61,7 +61,14 @@ async function initialize() {
       card.append(linkHint);
     });
     cards.replaceChildren(...elements);
-    const outdated = data.series.some(item => item.error || !Number.isFinite(Date.parse(item.fetchedAt)) || Date.now() - Date.parse(item.fetchedAt) > 36 * 60 * 60 * 1000);
+    // After 07:00 UTC today's morning refresh should have arrived.
+    // Before then yesterday's successful refresh is still expected.
+    const deadline = new Date();
+    deadline.setUTCHours(7, 0, 0, 0);
+    const expected = new Date(deadline);
+    if (Date.now() < deadline.getTime()) expected.setUTCDate(expected.getUTCDate() - 1);
+    expected.setUTCHours(0, 0, 0, 0);
+    const outdated = data.series.some(item => item.error || !Number.isFinite(Date.parse(item.fetchedAt)) || Date.parse(item.fetchedAt) < expected.getTime());
     status.textContent = outdated
       ? "Data update is overdue or failed. Check the closing date shown for each index."
       : "% change vs previous close · Select an index to open Yahoo Finance";
@@ -75,5 +82,6 @@ async function initialize() {
 }
 initialize();
 // Pick up newly published closing data in tabs left open overnight.
-setInterval(initialize, 60 * 60 * 1000);
+setInterval(initialize, 5 * 60 * 1000);
 })();
+

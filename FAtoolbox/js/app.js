@@ -202,7 +202,6 @@ document.querySelectorAll(".accordion").forEach(button => {
 });
 
 calculators.forEach(initializeCalculator);
-document.getElementById("nav-heading")?.click();
 window.FAInitializeChartOfAccounts();
 
 const clock = document.getElementById("current-datetime");
@@ -218,3 +217,4 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 1000);
 })();
+

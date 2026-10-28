@@ -8,7 +8,7 @@ on:
       - 'FAtoolbox/scripts/update-indices.mjs'
       - 'FAtoolbox/tests/indices.test.mjs'
   schedule:
-    - cron: '17 5 * * *'
+    - cron: '17 4,5,6,8,10 * * *'
   workflow_dispatch:
 
 permissions:
@@ -21,10 +21,14 @@ concurrency:
 
 jobs:
   update:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 1
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
       - name: Locate toolbox
@@ -48,14 +52,39 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add "$TOOLBOX_PATH/data/indices.json"
-          if ! git diff --cached --quiet; then
+          # Regenerate against the latest branch on conflict; never force-push.
+          published=false
+          for attempt in 1 2 3; do
+            git add "$TOOLBOX_PATH/data/indices.json"
+            if git diff --cached --quiet; then
+              published=true
+              break
+            fi
             git commit -m 'Update daily index closing data'
-            git push
+            if git push origin HEAD:main; then
+              published=true
+              break
+            fi
+            git fetch origin main
+            git reset --hard origin/main
+            # A partial download still writes per-index failure status for publication.
+            node "$TOOLBOX_PATH/scripts/update-indices.mjs" || true
+          done
+          if [ "$published" != true ]; then
+            echo '::error::Could not publish index data after three attempts.'
+            exit 1
           fi
-          gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds"
+          # Publishing can fail transiently after data has already been committed.
+          for attempt in 1 2 3; do
+            if gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds"; then
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1
       - name: Report incomplete data update
         if: steps.download.outcome == 'failure'
         run: |
           echo 'One or more indices failed to update. Previous values and warning status were retained.'
           exit 1
+

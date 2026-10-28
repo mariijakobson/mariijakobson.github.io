@@ -24,6 +24,7 @@ export function closingObservations(result, timezone, now = new Date()) {
   const points = new Map();
   timestamps.forEach((timestamp, index) => {
     const close = closes[index];
+    if (!Number.isFinite(timestamp)) return;
     const date = dateInZone(new Date(timestamp * 1000), timezone);
     // Exclude the current exchange-local date, even if that market has closed.
     if (date < today && Number.isFinite(close) && close > 0) points.set(date, close);
@@ -34,7 +35,16 @@ export function closingObservations(result, timezone, now = new Date()) {
   return observations;
 }
 
-async function fetchIndex(definition, now) {
+export function ensureNotRegressed(observations, previous = []) {
+  const latest = observations.at(-1)?.date;
+  const previousLatest = previous.at(-1)?.date;
+  if (previousLatest && (!latest || latest < previousLatest)) {
+    throw new Error("Source returned older closing history than already published");
+  }
+  return observations;
+}
+
+async function fetchIndex(definition, now, previous) {
   let lastError;
   for (const host of ["query1.finance.yahoo.com", "query2.finance.yahoo.com"]) {
     try {
@@ -46,6 +56,7 @@ async function fetchIndex(definition, now) {
       if (payload.chart?.error) throw new Error(payload.chart.error.description);
       const observations = closingObservations(payload.chart?.result?.[0], definition.timezone, now);
       if (now - new Date(observations.at(-1).date + "T23:59:59Z") > 7 * 86400000) throw new Error("Closing history is more than a week old");
+      ensureNotRegressed(observations, previous);
       return { ...definition, source: `https://finance.yahoo.com/quote/${encodeURIComponent(definition.symbol)}/history/`,
         observations,
         fetchedAt: now.toISOString(), error: null };
@@ -62,9 +73,9 @@ async function update() {
   }
   const series = [];
   for (const definition of definitions) {
-    try { series.push(await fetchIndex(definition, now)); }
+    const old = previous.series.find(item => item.symbol === definition.symbol);
+    try { series.push(await fetchIndex(definition, now, old?.observations)); }
     catch (error) {
-      const old = previous.series.find(item => item.symbol === definition.symbol);
       series.push({ ...definition, ...old, observations: old?.observations || [], error: "Daily update failed" });
       console.error(`${definition.name}: ${error.message}`);
     }
@@ -75,3 +86,4 @@ async function update() {
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) await update();
+

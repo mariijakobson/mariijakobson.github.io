@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { closingObservations, dateInZone } from "../scripts/update-indices.mjs";
+import { closingObservations, dateInZone, ensureNotRegressed } from "../scripts/update-indices.mjs";
 
 const timestamp = date => Date.parse(date) / 1000;
 const result = {
@@ -16,4 +16,19 @@ assert.equal(dateInZone(new Date("2026-10-26T00:30:00Z"), "America/New_York"), "
 assert.equal(dateInZone(new Date("2026-10-25T16:00:00Z"), "Asia/Tokyo"), "2026-10-26");
 assert.throws(() => closingObservations({ timestamp: [1], indicators: { quote: [{ close: [null] }] } }, "UTC"), /Insufficient/);
 assert.throws(() => closingObservations({}, "UTC"), /Missing/);
-console.log("Index close filtering checks passed.");
+
+
+// Do not replace published data with an older successful HTTP response.
+const old = [{ date: "2026-10-27", close: 100 }];
+assert.throws(() => ensureNotRegressed([{ date: "2026-10-26", close: 99 }], old), /older/);
+assert.doesNotThrow(() => ensureNotRegressed(old, old));
+assert.doesNotThrow(() => ensureNotRegressed([{ date: "2026-10-28", close: 101 }], old));
+assert.doesNotThrow(() => ensureNotRegressed(old));
+// Malformed timestamps must not discard otherwise valid history.
+const malformed = structuredClone(result);
+malformed.timestamp.push(null, "bad");
+malformed.indicators.quote[0].close.push(999, 999);
+assert.deepEqual(closingObservations(malformed, "America/New_York", new Date("2026-10-27T12:00:00Z")),
+  closingObservations(result, "America/New_York", new Date("2026-10-27T12:00:00Z")));
+
+console.log("Index close filtering and regression checks passed.");

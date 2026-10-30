@@ -67,24 +67,36 @@ Run `node scripts/update-indices.mjs` to refresh `data/indices.json`, and
 `node tests/indices.test.mjs` to check the closing-date rules. A failed download retains
 that index's previous observations and records an error for the page to display.
 The page checks for a newer published data file every five minutes, with a 15-second request timeout.
-After 07:00 UTC it warns if any index has not refreshed that UTC day; before then it expects
-the preceding day. This checks download freshness, not a holiday-aware trading calendar.
-Older source history never replaces a newer published closing date.
+From 07:00 Europe/Tallinn (including summer/winter time) it warns if any index has
+not refreshed that local day; before then it expects the preceding day. The request
+URL changes every five minutes to bypass intermediary caches as well as browser caches.
+Successful HTTP responses are checked against Yahoo's latest market timestamp: incomplete
+history is rejected and the second Yahoo host is tried. Published observations cannot
+regress or include current exchange-local dates. Missing source data never becomes zero.
 Serve this folder over HTTP to view the index panel locally; the calculators still work
 when opening `index.html` directly.
 
-For the existing GitHub Pages repository, place the supplied workflow at the repository
-root `.github/workflows/update-index-closes.yml`, alongside the `FAtoolbox/` folder.
-It runs daily at 04:17, 05:17, 06:17, 08:17 and 10:17 UTC (add two hours in Estonia
-in winter, three in summer). Later runs provide recovery opportunities for a missed schedule
-or a temporary source failure. GitHub scheduling remains best-effort. The updater checks out
-current main even on reruns, saves only the index data file, and explicitly requests a Pages
-rebuild. Concurrent branch changes trigger up to three publication attempts, regenerating
-data against current main rather than overwriting others’ commits. Pages requests are retried. It needs GitHub Actions enabled
-with Contents and Pages write permissions and branch-based Pages publishing from the
-default branch. The schedule is active only once installed in that default branch.
-Run it manually after installation to verify the full download and publication path;
-GitHub may delay scheduled runs. No API key or additional secret is needed.
+The repository has two independent update paths:
+
+- GitHub Actions (`.github/workflows/update-index-closes.yml`) runs at 04:17, 05:17,
+  06:17, 08:17 and 10:17 UTC and on updater/test changes. It commits the data and
+  explicitly requests a Pages rebuild. Conflicts regenerate against the latest main;
+  no force pushes are used.
+- A separate ChatGPT automation checks in the 07:00, 08:00, 09:00 and 10:00
+  Europe/Tallinn windows daily. If data is missing or stale, it runs the same tested
+  Node updater outside Actions and commits the exact generated JSON through the
+  connected GitHub app. It verifies the public data file after Pages deployment.
+  Fresh matching repository/public data is a no-op. Failures alert the owner and are
+  retried on the next check. Automation reference: `6ae4613411688191bb0ef667a12a162b`.
+
+The maintenance procedure is in [`scripts/REFRESH.md`](scripts/REFRESH.md).
+Both paths preserve existing observations and expose per-index errors when downloads fail.
+The automation runs within an hour of each scheduled window; neither scheduler promises
+exact-time delivery. Both still rely on GitHub publishing and Yahoo Finance availability.
+No API key or additional secret is needed. The automation requires the connected GitHub
+app to remain authorized; GitHub Actions requires Contents and Pages write permissions
+and branch-based Pages publishing from main.
 
 
 All calculator panels start collapsed on page load.
+

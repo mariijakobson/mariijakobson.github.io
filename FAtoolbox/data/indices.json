@@ -1,5 +1,5 @@
 {
-  "attemptedAt": "2026-11-02T05:04:41.821Z",
+  "attemptedAt": "2026-11-02T12:23:48.587Z",
   "series": [
     {
       "name": "Nasdaq-100",
@@ -41,7 +41,7 @@
           "close": 28384.849609375
         }
       ],
-      "fetchedAt": "2026-11-02T05:04:41.821Z",
+      "fetchedAt": "2026-11-02T12:23:48.587Z",
       "sourceMarketDate": "2026-10-30",
       "error": null
     },
@@ -85,8 +85,8 @@
           "close": 3271.39990234375
         }
       ],
-      "fetchedAt": "2026-11-02T05:04:41.821Z",
-      "sourceMarketDate": "2026-10-30",
+      "fetchedAt": "2026-11-02T12:23:48.587Z",
+      "sourceMarketDate": "2026-11-02",
       "error": null
     },
     {
@@ -129,7 +129,7 @@
           "close": 63290.109375
         }
       ],
-      "fetchedAt": "2026-11-02T05:04:41.821Z",
+      "fetchedAt": "2026-11-02T12:23:48.587Z",
       "sourceMarketDate": "2026-11-02",
       "error": null
     },
@@ -173,8 +173,8 @@
           "close": 6131.31005859375
         }
       ],
-      "fetchedAt": "2026-11-02T05:04:41.821Z",
-      "sourceMarketDate": "2026-10-30",
+      "fetchedAt": "2026-11-02T12:23:48.587Z",
+      "sourceMarketDate": "2026-11-02",
       "error": null
     },
     {
@@ -217,7 +217,7 @@
           "close": 7580.06982421875
         }
       ],
-      "fetchedAt": "2026-11-02T05:04:41.821Z",
+      "fetchedAt": "2026-11-02T12:23:48.587Z",
       "sourceMarketDate": "2026-10-30",
       "error": null
     }

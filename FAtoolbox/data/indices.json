@@ -1,5 +1,5 @@
 {
-  "attemptedAt": "2026-11-02T12:23:48.587Z",
+  "attemptedAt": "2026-11-03T04:58:16.603Z",
   "series": [
     {
       "name": "Nasdaq-100",
@@ -41,8 +41,8 @@
           "close": 28384.849609375
         }
       ],
-      "fetchedAt": "2026-11-02T12:23:48.587Z",
-      "sourceMarketDate": "2026-10-30",
+      "fetchedAt": "2026-11-03T04:58:16.603Z",
+      "sourceMarketDate": "2026-11-02",
       "error": null
     },
     {
@@ -52,10 +52,6 @@
       "color": "#ae7c27",
       "source": "https://finance.yahoo.com/quote/%5EOMX/history/",
       "observations": [
-        {
-          "date": "2026-10-21",
-          "close": 3244.070068359375
-        },
         {
           "date": "2026-10-22",
           "close": 3162.780029296875
@@ -83,9 +79,13 @@
         {
           "date": "2026-10-30",
           "close": 3271.39990234375
+        },
+        {
+          "date": "2026-11-02",
+          "close": 3287.02001953125
         }
       ],
-      "fetchedAt": "2026-11-02T12:23:48.587Z",
+      "fetchedAt": "2026-11-03T04:58:16.603Z",
       "sourceMarketDate": "2026-11-02",
       "error": null
     },
@@ -96,10 +96,6 @@
       "color": "#b65d64",
       "source": "https://finance.yahoo.com/quote/%5EN225/history/",
       "observations": [
-        {
-          "date": "2026-10-21",
-          "close": 64621.23828125
-        },
         {
           "date": "2026-10-22",
           "close": 62907.83984375
@@ -127,9 +123,13 @@
         {
           "date": "2026-10-30",
           "close": 63290.109375
+        },
+        {
+          "date": "2026-11-02",
+          "close": 63081.859375
         }
       ],
-      "fetchedAt": "2026-11-02T12:23:48.587Z",
+      "fetchedAt": "2026-11-03T04:58:16.603Z",
       "sourceMarketDate": "2026-11-02",
       "error": null
     },
@@ -140,10 +140,6 @@
       "color": "#8171b1",
       "source": "https://finance.yahoo.com/quote/%5ESTOXX50E/history/",
       "observations": [
-        {
-          "date": "2026-10-21",
-          "close": 6207.52001953125
-        },
         {
           "date": "2026-10-22",
           "close": 6087.009765625
@@ -171,9 +167,13 @@
         {
           "date": "2026-10-30",
           "close": 6131.31005859375
+        },
+        {
+          "date": "2026-11-02",
+          "close": 6176.06005859375
         }
       ],
-      "fetchedAt": "2026-11-02T12:23:48.587Z",
+      "fetchedAt": "2026-11-03T04:58:16.603Z",
       "sourceMarketDate": "2026-11-02",
       "error": null
     },
@@ -217,8 +217,8 @@
           "close": 7580.06982421875
         }
       ],
-      "fetchedAt": "2026-11-02T12:23:48.587Z",
-      "sourceMarketDate": "2026-10-30",
+      "fetchedAt": "2026-11-03T04:58:16.603Z",
+      "sourceMarketDate": "2026-11-02",
       "error": null
     }
   ]

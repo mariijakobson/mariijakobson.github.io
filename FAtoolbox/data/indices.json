@@ -1,5 +1,5 @@
 {
-  "attemptedAt": "2026-11-13T12:12:22.892Z",
+  "attemptedAt": "2026-11-14T05:04:37.066Z",
   "series": [
     {
       "name": "Nasdaq-100",
@@ -8,10 +8,6 @@
       "color": "#386494",
       "source": "https://finance.yahoo.com/quote/%5ENDX/history/",
       "observations": [
-        {
-          "date": "2026-11-03",
-          "close": 28180.259765625
-        },
         {
           "date": "2026-11-04",
           "close": 28437.169921875
@@ -39,10 +35,14 @@
         {
           "date": "2026-11-12",
           "close": 28289.189453125
+        },
+        {
+          "date": "2026-11-13",
+          "close": 27943.740234375
         }
       ],
-      "fetchedAt": "2026-11-13T12:12:22.892Z",
-      "sourceMarketDate": "2026-11-12",
+      "fetchedAt": "2026-11-14T05:04:37.066Z",
+      "sourceMarketDate": "2026-11-13",
       "error": null
     },
     {
@@ -52,10 +52,6 @@
       "color": "#ae7c27",
       "source": "https://finance.yahoo.com/quote/%5EOMX/history/",
       "observations": [
-        {
-          "date": "2026-11-03",
-          "close": 3284.43994140625
-        },
         {
           "date": "2026-11-04",
           "close": 3311.669921875
@@ -83,9 +79,13 @@
         {
           "date": "2026-11-12",
           "close": 3359.3701171875
+        },
+        {
+          "date": "2026-11-13",
+          "close": 3356.8701171875
         }
       ],
-      "fetchedAt": "2026-11-13T12:12:22.892Z",
+      "fetchedAt": "2026-11-14T05:04:37.066Z",
       "sourceMarketDate": "2026-11-13",
       "error": null
     },
@@ -96,10 +96,6 @@
       "color": "#b65d64",
       "source": "https://finance.yahoo.com/quote/%5EN225/history/",
       "observations": [
-        {
-          "date": "2026-11-02",
-          "close": 63081.859375
-        },
         {
           "date": "2026-11-04",
           "close": 62188.62890625
@@ -127,9 +123,13 @@
         {
           "date": "2026-11-12",
           "close": 60819.359375
+        },
+        {
+          "date": "2026-11-13",
+          "close": 61142.3515625
         }
       ],
-      "fetchedAt": "2026-11-13T12:12:22.892Z",
+      "fetchedAt": "2026-11-14T05:04:37.066Z",
       "sourceMarketDate": "2026-11-13",
       "error": null
     },
@@ -140,10 +140,6 @@
       "color": "#8171b1",
       "source": "https://finance.yahoo.com/quote/%5ESTOXX50E/history/",
       "observations": [
-        {
-          "date": "2026-11-03",
-          "close": 6144.56005859375
-        },
         {
           "date": "2026-11-04",
           "close": 6265.7099609375
@@ -171,9 +167,13 @@
         {
           "date": "2026-11-12",
           "close": 6398.97998046875
+        },
+        {
+          "date": "2026-11-13",
+          "close": 6386.85986328125
         }
       ],
-      "fetchedAt": "2026-11-13T12:12:22.892Z",
+      "fetchedAt": "2026-11-14T05:04:37.066Z",
       "sourceMarketDate": "2026-11-13",
       "error": null
     },
@@ -184,10 +184,6 @@
       "color": "#278679",
       "source": "https://finance.yahoo.com/quote/%5EGSPC/history/",
       "observations": [
-        {
-          "date": "2026-11-03",
-          "close": 7568.919921875
-        },
         {
           "date": "2026-11-04",
           "close": 7688.6201171875
@@ -215,10 +211,14 @@
         {
           "date": "2026-11-12",
           "close": 7592.39990234375
+        },
+        {
+          "date": "2026-11-13",
+          "close": 7561.669921875
         }
       ],
-      "fetchedAt": "2026-11-13T12:12:22.892Z",
-      "sourceMarketDate": "2026-11-12",
+      "fetchedAt": "2026-11-14T05:04:37.066Z",
+      "sourceMarketDate": "2026-11-13",
       "error": null
     }
   ]
